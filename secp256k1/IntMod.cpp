@@ -5,7 +5,7 @@
 #define MAX(x,y) (((x)>(y))?(x):(y))
 #define MIN(x,y) (((x)<(y))?(x):(y))
 
-static Int     Field_P;       // Field characteristic
+static Int     _P;       // Field characteristic
 static Int     _R;       // Montgomery multiplication R
 static Int     _R2;      // Montgomery multiplication R2
 static Int     _R3;      // Montgomery multiplication R3
@@ -22,7 +22,7 @@ extern Int _ONE;
 void Int::ModAdd(Int *a) {
   Int p;
   Add(a);
-  p.Sub(this, &Field_P);
+  p.Sub(this,&_P);
   if(p.IsPositive())
     Set(&p);
 }
@@ -32,7 +32,7 @@ void Int::ModAdd(Int *a) {
 void Int::ModAdd(Int *a, Int *b) {
   Int p;
   Add(a,b);
-  p.Sub(this, &Field_P);
+  p.Sub(this,&_P);
   if(p.IsPositive())
     Set(&p);
 }
@@ -42,7 +42,7 @@ void Int::ModAdd(Int *a, Int *b) {
 void Int::ModDouble() {
   Int p;
   Add(this);
-  p.Sub(this, &Field_P);
+  p.Sub(this,&_P);
   if(p.IsPositive())
     Set(&p);
 }
@@ -52,7 +52,7 @@ void Int::ModDouble() {
 void Int::ModAdd(uint64_t a) {
   Int p;
   Add(a);
-  p.Sub(this, &Field_P);
+  p.Sub(this,&_P);
   if(p.IsPositive())
     Set(&p);
 }
@@ -62,7 +62,7 @@ void Int::ModAdd(uint64_t a) {
 void Int::ModSub(Int *a) {
   Sub(a);
   if (IsNegative())
-    Add(&Field_P);
+    Add(&_P);
 }
 
 // ------------------------------------------------
@@ -70,22 +70,22 @@ void Int::ModSub(Int *a) {
 void Int::ModSub(uint64_t a) {
   Sub(a);
   if (IsNegative())
-    Add(&Field_P);
+    Add(&_P);
 }
 
 // ------------------------------------------------
 
-void Int::ModSub(Int *a, Int *b) {
-  Sub(a, b);
+void Int::ModSub(Int *a,Int *b) {
+  Sub(a,b);
   if (IsNegative())
-    Add(&Field_P);
+    Add(&_P);
 }
 
 // ------------------------------------------------
 
 void Int::ModNeg() {
   Neg();
-  Add(&Field_P);
+  Add(&_P);
 }
 
 // ------------------------------------------------
@@ -243,7 +243,7 @@ void Int::ModInv() {
   //#define PENK 1              // ~215 kOps/s
   #define DRS62 1               // ~640 kOps/s
 
-  Int u(&Field_P);
+  Int u(&_P);
   Int v(this);
 
 #ifdef XCD
@@ -277,7 +277,7 @@ void Int::ModInv() {
   }
 
   if (!bIterations) {
-    Set(&Field_P);
+    Set(&_P);
     Sub(&s);  /* inv = n - u1 */
   } else {
     Set(&s);  /* inv = u1     */
@@ -290,10 +290,10 @@ void Int::ModInv() {
   Int r((int64_t)0);
   Int s((int64_t)1);
   Int x;
-  Int n2(&Field_P);
+  Int n2(&_P);
   int k = 0;
   int T;
-  int Q = Field_P.bits[0] & 3;
+  int Q = _P.bits[0] & 3;
   shiftL(1,n2.bits64);
 
   // Penk's Algorithm (With DRS2 optimisation)
@@ -303,11 +303,11 @@ void Int::ModInv() {
     shiftR(1,v.bits64);
     if (s.IsEven())
       shiftR(1, s.bits64);
-    else if (s.IsGreater(&Field_P)) {
-      s.Sub(&Field_P);
+    else if (s.IsGreater(&_P)) {
+      s.Sub(&_P);
       shiftR(1, s.bits64);
     } else {
-      s.Add(&Field_P);
+      s.Add(&_P);
       shiftR(1, s.bits64);
     }
 
@@ -332,21 +332,21 @@ void Int::ModInv() {
         r.Add(&n2);
         shiftR(2, r.bits64);
       } else if (T == Q) {
-        r.Sub(&Field_P);
+        r.Sub(&_P);
         shiftR(2, r.bits64);
       } else {
-        r.Add(&Field_P);
+        r.Add(&_P);
         shiftR(2, r.bits64);
       }
       while (u.IsEven()) {
         shiftR(1,u.bits64);
         if (r.IsEven()) {
           shiftR(1, r.bits64);
-        } else if (r.IsGreater(&Field_P)) {
-          r.Sub(&Field_P);
+        } else if (r.IsGreater(&_P)) {
+          r.Sub(&_P);
           shiftR(1, r.bits64);
         } else {
-          r.Add(&Field_P);
+          r.Add(&_P);
           shiftR(1, r.bits64);
         }
       }
@@ -372,10 +372,10 @@ void Int::ModInv() {
         s.Add(&n2);
         shiftR(2, s.bits64);
       } else if (T == Q) {
-        s.Sub(&Field_P);
+        s.Sub(&_P);
         shiftR(2, s.bits64);
       } else {
-        s.Add(&Field_P);
+        s.Add(&_P);
         shiftR(2, s.bits64);
       }
 
@@ -383,11 +383,11 @@ void Int::ModInv() {
         shiftR(1, v.bits64);
         if (s.IsEven()) {
           shiftR(1, s.bits64);
-        } else if (s.IsGreater(&Field_P)) {
-          s.Sub(&Field_P);
+        } else if (s.IsGreater(&_P)) {
+          s.Sub(&_P);
           shiftR(1, s.bits64);
         } else {
-          s.Add(&Field_P);
+          s.Add(&_P);
           shiftR(1, s.bits64);
         }
       }
@@ -401,7 +401,7 @@ void Int::ModInv() {
     return;
   }
   if (r.IsNegative())
-    r.Add(&Field_P);
+    r.Add(&_P);
   Set(&r);
 
 #endif
@@ -440,16 +440,16 @@ void Int::ModInv() {
     k++;
   }
 
-  if (r.IsGreater(&Field_P))
-    r.Sub(&Field_P);
+  if (r.IsGreater(&_P))
+    r.Sub(&_P);
   r.Neg();
-  r.Add(&Field_P);
+  r.Add(&_P);
 
   for (int i = 0; i < k; i++) {
     if (r.IsEven()) {
       shiftR(1, r.bits64);
     } else {
-      r.Add(&Field_P);
+      r.Add(&_P);
       shiftR(1, r.bits64);
     }
   }
@@ -487,8 +487,8 @@ void Int::ModInv() {
   // Compute multiple of P to add to s and r to make them multiple of 2^62
   uint64_t r0 = (t2.bits64[0] * MM64) & MSK62;
   uint64_t s0 = (t4.bits64[0] * MM64) & MSK62;
-  r0_P.Mult(&Field_P,r0);
-  s0_P.Mult(&Field_P,s0);
+  r0_P.Mult(&_P,r0);
+  s0_P.Mult(&_P,s0);
   r.Add(&t2,&r0_P);
   s.Add(&t4,&s0_P);
 
@@ -514,8 +514,8 @@ void Int::ModInv() {
     // Compute multiple of P to add to s and r to make them multiple of 2^62
     uint64_t r0 = (r.bits64[0] * MM64) & MSK62;
     uint64_t s0 = (s.bits64[0] * MM64) & MSK62;
-    r0_P.Mult(&Field_P,r0);
-    s0_P.Mult(&Field_P,s0);
+    r0_P.Mult(&_P,r0);
+    s0_P.Mult(&_P,s0);
     r.Add(&r0_P);
     s.Add(&s0_P);
 
@@ -540,9 +540,9 @@ void Int::ModInv() {
   }
 
   while(r.IsNegative())
-    r.Add(&Field_P);
-  while(r.IsGreaterOrEqual(&Field_P))
-    r.Sub(&Field_P);
+    r.Add(&_P);
+  while(r.IsGreaterOrEqual(&_P))
+    r.Sub(&_P);
   Set(&r);
 
 #endif
@@ -603,7 +603,7 @@ void Int::ModCube(Int *a) {
 bool Int::HasSqrt() {
 
   // Euler's criterion
-  Int e(&Field_P);
+  Int e(&_P);
   Int a(this);
   e.SubOne();
   e.ShiftR(1);
@@ -617,7 +617,7 @@ bool Int::HasSqrt() {
 
 void Int::ModSqrt() {
 
-  if (Field_P.IsEven()) {
+  if (_P.IsEven()) {
     CLEAR();
     return;
   }
@@ -627,20 +627,20 @@ void Int::ModSqrt() {
     return;
   }
 
-  if ((Field_P.bits64[0] & 3) == 3) {
+  if ((_P.bits64[0] & 3) == 3) {
 
-    Int e(&Field_P);
+    Int e(&_P);
     e.AddOne();
     e.ShiftR(2);
     ModExp(&e);
 
-  } else if ((Field_P.bits64[0] & 3) == 1) {
+  } else if ((_P.bits64[0] & 3) == 1) {
 
-    int nbBit = Field_P.GetBitLength();
+    int nbBit = _P.GetBitLength();
 
     // Tonelli Shanks
     uint64_t e=0;
-    Int S(&Field_P);
+    Int S(&_P);
     S.SubOne();
     while (S.IsEven()) {
       S.ShiftR(1);
@@ -704,7 +704,7 @@ void Int::ModMul(Int *a, Int *b) {
 // ------------------------------------------------
 
 Int* Int::GetFieldCharacteristic() {
-  return &Field_P;
+  return &_P;
 }
 
 // ------------------------------------------------
@@ -741,7 +741,7 @@ void Int::SetupField(Int *n, Int *R, Int *R2, Int *R3, Int *R4) {
     MM64 = (uint64_t)(-x);
     MM32 = (uint32_t)MM64;
   }
-  Field_P.Set(n);
+  _P.Set(n);
 
   // Size of Montgomery mult (64bits digit)
   Msize = nSize/2;
@@ -831,7 +831,7 @@ void Int::MontgomeryMult(Int *a) {
   // i = 0
   imm_umul(a->bits64, bits64[0], pr.bits64);
   ML = pr.bits64[0] * MM64;
-  imm_umul(Field_P.bits64, ML, p.bits64);
+  imm_umul(_P.bits64, ML, p.bits64);
   c = pr.AddC(&p);
   memcpy(t.bits64, pr.bits64 + 1, 8 * (NB64BLOCK - 1));
   t.bits64[NB64BLOCK - 1] = c;
@@ -840,13 +840,13 @@ void Int::MontgomeryMult(Int *a) {
 
     imm_umul(a->bits64, bits64[i], pr.bits64);
     ML = (pr.bits64[0] + t.bits64[0]) * MM64;
-    imm_umul(Field_P.bits64, ML, p.bits64);
+    imm_umul(_P.bits64, ML, p.bits64);
 	  c = pr.AddC(&p);
     t.AddAndShift(&t, &pr, c);
 
   }
 
-  p.Sub(&t,&Field_P);
+  p.Sub(&t,&_P);
   if (p.IsPositive())
     Set(&p);
   else
@@ -868,7 +868,7 @@ void Int::MontgomeryMult(Int *a, Int *b) {
   // i = 0
   imm_umul(a->bits64, b->bits64[0], pr.bits64);
   ML = pr.bits64[0] * MM64;
-  imm_umul(Field_P.bits64, ML, p.bits64);
+  imm_umul(_P.bits64, ML, p.bits64);
   c = pr.AddC(&p);
   memcpy(bits64,pr.bits64 + 1,8*(NB64BLOCK-1));
   bits64[NB64BLOCK-1] = c;
@@ -877,13 +877,13 @@ void Int::MontgomeryMult(Int *a, Int *b) {
 
     imm_umul(a->bits64, b->bits64[i], pr.bits64);
     ML = (pr.bits64[0] + bits64[0]) * MM64;
-    imm_umul(Field_P.bits64, ML, p.bits64);
+    imm_umul(_P.bits64, ML, p.bits64);
 	  c = pr.AddC(&p);
     AddAndShift(this, &pr, c);
 
   }
 
-  p.Sub(this, &Field_P);
+  p.Sub(this, &_P);
   if (p.IsPositive())
     Set(&p);
 
@@ -893,7 +893,7 @@ void Int::MontgomeryMult(Int *a, Int *b) {
 // SecpK1 specific section -----------------------------------------------------------------------------
 
 void Int::ModMulK1(Int *a, Int *b) {
-/*
+
 #ifndef WIN64
 #if (__GNUC__ > 7) || (__GNUC__ == 7 && (__GNUC_MINOR__ > 2))
   unsigned char c;
@@ -904,8 +904,7 @@ void Int::ModMulK1(Int *a, Int *b) {
 #else
   unsigned char c;
 #endif
-*/
-  unsigned char c;
+
 
   uint64_t ah, al;
   uint64_t t[5];
@@ -956,7 +955,7 @@ void Int::ModMulK1(Int *a, Int *b) {
 }
 
 void Int::ModMulK1(Int *a) {
-/*
+
 #ifndef WIN64
 #if (__GNUC__ > 7) || (__GNUC__ == 7 && (__GNUC_MINOR__ > 2))
   unsigned char c;
@@ -967,8 +966,6 @@ void Int::ModMulK1(Int *a) {
 #else
   unsigned char c;
 #endif
-*/
-  unsigned char c;
 
   uint64_t ah, al;
   uint64_t t[5];
@@ -1018,7 +1015,7 @@ void Int::ModMulK1(Int *a) {
 }
 
 void Int::ModSquareK1(Int *a) {
-/*
+
 #ifndef WIN64
 #if (__GNUC__ > 7) || (__GNUC__ == 7 && (__GNUC_MINOR__ > 2))
   unsigned char c;
@@ -1029,8 +1026,6 @@ void Int::ModSquareK1(Int *a) {
 #else
   unsigned char c;
 #endif
-*/
-  unsigned char c;
 
   uint64_t r512[8];
   uint64_t u10, u11;

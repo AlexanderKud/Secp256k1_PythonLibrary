@@ -16,8 +16,8 @@ public:
 private:
 
 	Int *ints;
-    Int *subp;
-    int size;
+  Int *subp;
+  int size;
 
 };
 

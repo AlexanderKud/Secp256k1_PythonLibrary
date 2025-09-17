@@ -58,10 +58,6 @@ bool Point::equals(Point &p) {
   return x.IsEqual(&p.x) && y.IsEqual(&p.y) && z.IsEqual(&p.z);
 }
 
-bool Point::equals2(Point &p) {
-  return x.IsEqual(&p.x) && y.IsEqual(&p.y);
-}
-
 std::string Point::toString() {
 
   std::string ret;

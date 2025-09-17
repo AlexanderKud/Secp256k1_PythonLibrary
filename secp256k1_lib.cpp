@@ -15,8 +15,27 @@ extern "C" {
     void check() {
         Int pk; 
         pk.SetInt32(1);
-        Point P = ::secp256k1->ScalarMultiplication(&pk);
-        std::cout << ::secp256k1->GetPublicKeyHex(P) << std::endl;
+        Point P = ::secp256k1->ComputePublicKey(&pk);
+        std::cout << ::secp256k1->GetPublicKeyHex(false, P) << std::endl;
+        std::cout << ::secp256k1->GetPublicKeyHex(true, P) << std::endl;
+    }
+    
+    const char* ret_str() {
+        const char *str = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8";
+        return str;
+    }
+    
+    void get_int(char* i) {
+        Int pvk;
+        pvk.SetBase10(i);
+        std::cout << pvk.GetBase10() << std::endl;
+    }
+    
+    const char* get_int2() {
+        Int pvk;
+        char* key = "ff";
+        pvk.SetBase16(key);
+        return pvk.GetBase10().c_str();
     }
 
 }

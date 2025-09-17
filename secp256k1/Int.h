@@ -1,9 +1,9 @@
 #ifndef BIGINTH
 #define BIGINTH
 
+#include "Random.h"
 #include <string>
 #include <inttypes.h>
-#include <gmp.h>
 
 // We need 1 extra block for Knuth div algorithm , Montgomery multiplication and ModInv
 #define BISIZE 256
@@ -28,10 +28,9 @@ public:
   Int(Int *a);
 
   // Op
-  void floor_Div(Int *a, Int *b);
   void Add(uint64_t a);
   void Add(Int *a);
-  void Add(Int *a, Int *b);
+  void Add(Int *a,Int *b);
   void AddOne();
   void Sub(uint64_t a);
   void Sub(Int *a);
@@ -40,11 +39,11 @@ public:
   void Mult(Int *a);
   void Mult(uint64_t a);
   void IMult(int64_t a);
-  void Mult(Int *a, uint64_t b);
+  void Mult(Int *a,uint64_t b);
   void IMult(Int *a, int64_t b);
-  void Mult(Int *a, Int *b);
-  void IMultAdd(Int* a, int64_t aa, Int* b, int64_t bb);
-  void Div(Int *a, Int *mod = NULL);
+  void Mult(Int *a,Int *b);
+  void IMultAdd(Int* a,int64_t aa,Int* b,int64_t bb);
+  void Div(Int *a,Int *mod = NULL);
   void MultModN(Int *a, Int *b, Int *n);
   void Neg();
   void Abs();
@@ -74,6 +73,8 @@ public:
   bool IsNegative();
   bool IsEven();
   bool IsOdd();
+  bool IsProbablePrime();
+
 
   double ToDouble();
 
@@ -129,7 +130,6 @@ public:
 
   // Setter
   void SetInt32(uint32_t value);
-  void SetInt64(uint64_t value);
   void Set(Int *a);
   void SetBase10(char *value);
   void SetBase16(char *value);
@@ -137,6 +137,8 @@ public:
   void SetByte(int n,unsigned char byte);
   void SetDWord(int n, uint32_t b);
   void SetQWord(int n,uint64_t b);
+  void Rand(int nbit);
+  void Rand(Int *randMax);
   void Set32Bytes(unsigned char *bytes);
   void MaskByte(int n);
 
@@ -150,7 +152,7 @@ public:
   std::string GetBase2();
   std::string GetBase10();
   std::string GetBase16();
-  std::string GetBaseN(int n, char *charset);
+  std::string GetBaseN(int n,char *charset);
   std::string GetBlockStr();
   std::string GetC64Str(int nbDigit);
 
@@ -172,9 +174,9 @@ public:
 
 private:
 
-  void ShiftL32BitAndSub(Int *a, int n);
+  void ShiftL32BitAndSub(Int *a,int n);
   uint64_t AddC(Int *a);
-  void AddAndShift(Int *a, Int *b, uint64_t cH);
+  void AddAndShift(Int *a, Int *b,uint64_t cH);
   void Mult(Int *a, uint32_t b);
   int  GetLowestBit();
   void CLEAR();
@@ -195,21 +197,20 @@ static uint64_t inline _umul128(uint64_t a, uint64_t b, uint64_t *h) {
     return rlo;
 }
 
-static uint64_t inline __shiftright128(uint64_t a, uint64_t b, unsigned char n) {
+static uint64_t inline __shiftright128(uint64_t a, uint64_t b,unsigned char n) {
   uint64_t c;
   __asm__ ("movq %1,%0;shrdq %3,%2,%0;" : "=D"(c) : "r"(a),"r"(b),"c"(n));
   return  c;
 }
 
 
-static uint64_t inline __shiftleft128(uint64_t a, uint64_t b, unsigned char n) {
+static uint64_t inline __shiftleft128(uint64_t a, uint64_t b,unsigned char n) {
   uint64_t c;
   __asm__ ("movq %1,%0;shldq %3,%2,%0;" : "=D"(c) : "r"(b),"r"(a),"c"(n));
   return  c;
 }
 
 #define _subborrow_u64(a,b,c,d) __builtin_ia32_sbb_u64(a,b,c,(long long unsigned int*)d);
-//#define _subborrow_u64(a,b,c,d) __builtin_ia32_subborrow_u64(a,b,c,(long long unsigned int*)d); // clang++
 #define _addcarry_u64(a,b,c,d) __builtin_ia32_addcarryx_u64(a,b,c,(long long unsigned int*)d);
 #define _byteswap_uint64 __builtin_bswap64
 
