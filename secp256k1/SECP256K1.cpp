@@ -496,6 +496,52 @@ Point Secp256K1::ParsePublicKeyHex(std::string str,bool &isCompressed) {
 
 }
 
+void Secp256K1::GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes)
+{
+  if (!compressed) {
+
+    // Full public key
+    publicKeyBytes[0] = 0x4;
+    pubKey.x.Get32Bytes(publicKeyBytes + 1);
+    pubKey.y.Get32Bytes(publicKeyBytes + 33);
+  }
+  else {
+
+    // Compressed public key
+    publicKeyBytes[0] = pubKey.y.IsEven() ? 0x2 : 0x3;
+    pubKey.x.Get32Bytes(publicKeyBytes + 1);
+
+
+    //for (int i = 0; i < 33; i++) {
+    //  printf("%02x", ((uint8_t*)publicKeyBytes)[i]);
+    //}
+    //printf("\n");
+  }
+}
+
+void Secp256K1::GetXBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes)
+{
+  if (!compressed) {
+
+    // Full public key
+    //publicKeyBytes[0] = 0x4;
+    pubKey.x.Get32Bytes(publicKeyBytes);
+    pubKey.y.Get32Bytes(publicKeyBytes + 32);
+  }
+  else {
+
+    // Compressed public key
+    //publicKeyBytes[0] = pubKey.y.IsEven() ? 0x2 : 0x3;
+    pubKey.x.Get32Bytes(publicKeyBytes);
+
+
+    //for (int i = 0; i < 33; i++) {
+    //  printf("%02x", ((uint8_t*)publicKeyBytes)[i]);
+    //}
+    //printf("\n");
+  }
+}
+
 std::string Secp256K1::GetPublicKeyHex(bool compressed, Point &pubKey) {
 
   unsigned char publicKeyBytes[128];
@@ -510,7 +556,8 @@ std::string Secp256K1::GetPublicKeyHex(bool compressed, Point &pubKey) {
     pubKey.y.Get32Bytes(publicKeyBytes + 33);
 
     for (int i = 0; i < 65; i++) {
-      sprintf(tmp, "%02X", (int)publicKeyBytes[i]);
+      //sprintf(tmp, "%02X", (int)publicKeyBytes[i]); //uppercase
+      sprintf(tmp, "%02x", (int)publicKeyBytes[i]); //lowercase
       ret.append(tmp);
     }
 
@@ -521,7 +568,8 @@ std::string Secp256K1::GetPublicKeyHex(bool compressed, Point &pubKey) {
     pubKey.x.Get32Bytes(publicKeyBytes + 1);
 
     for (int i = 0; i < 33; i++) {
-      sprintf(tmp, "%02X", (int)publicKeyBytes[i]);
+      //sprintf(tmp, "%02X", (int)publicKeyBytes[i]); //uppercase
+      sprintf(tmp, "%02x", (int)publicKeyBytes[i]); //lowercase
       ret.append(tmp);
     }
 

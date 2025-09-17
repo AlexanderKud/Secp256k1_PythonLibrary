@@ -22,7 +22,7 @@ public:
   void Check();
   bool  EC(Point &p);
 
-  void GetHash160(int type,bool compressed,
+  void GetHash160(int type, bool compressed,
     Point &k0, Point &k1, Point &k2, Point &k3,
     uint8_t *h0, uint8_t *h1, uint8_t *h2, uint8_t *h3);
 
@@ -34,10 +34,12 @@ public:
   std::string GetPrivAddress(bool compressed, Int &privKey );
   std::string GetPublicKeyHex(bool compressed, Point &p);
   Point ParsePublicKeyHex(std::string str, bool &isCompressed);
+  void GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes);
+  void GetXBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes);
 
   bool CheckPudAddress(std::string address);
 
-  static Int DecodePrivateKey(char *key,bool *compressed);
+  static Int DecodePrivateKey(char *key, bool *compressed);
 
   Point Add(Point &p1, Point &p2);
   Point Add2(Point &p1, Point &p2);
@@ -50,7 +52,7 @@ public:
 
 private:
 
-  uint8_t GetByte(std::string &str,int idx);
+  uint8_t GetByte(std::string &str, int idx);
 
   Int GetY(Int x, bool isEven);
   Point GTable[256*32];       // Generator table
