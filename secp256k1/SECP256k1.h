@@ -31,10 +31,11 @@ public:
   std::string GetAddress(int type, bool compressed, Point &pubKey);
   std::string GetAddress(int type, bool compressed, unsigned char *hash160);
   std::vector<std::string> GetAddress(int type, bool compressed, unsigned char *h1, unsigned char *h2, unsigned char *h3, unsigned char *h4);
-  std::string GetPrivAddress(bool compressed, Int &privKey );
+  std::string GetPrivAddress(bool compressed, Int &privKey);
   std::string GetPublicKeyHex(bool compressed, Point &p);
   Point ParsePublicKeyHex(std::string str, bool &isCompressed);
   void GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes);
+  Point SetPubKeyBytes(unsigned char* publicKeyBytesIn);
   void GetXBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes);
 
   bool CheckPudAddress(std::string address);

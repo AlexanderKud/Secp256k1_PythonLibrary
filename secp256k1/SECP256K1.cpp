@@ -519,6 +519,15 @@ void Secp256K1::GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* pu
   }
 }
 
+Point Secp256K1::SetPubKeyBytes(unsigned char* publicKeyBytesIn)
+{
+    Point ret;
+    ret.z.SetInt32(1);
+    ret.x.Set32Bytes(publicKeyBytesIn + 1);
+    ret.y.Set32Bytes(publicKeyBytesIn + 33);
+    return ret;
+}
+
 void Secp256K1::GetXBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes)
 {
   if (!compressed) {
@@ -631,7 +640,7 @@ void Secp256K1::GetHash160(int type, bool compressed, Point &pubKey, unsigned ch
 
 }
 
-std::string Secp256K1::GetPrivAddress(bool compressed,Int &privKey) {
+std::string Secp256K1::GetPrivAddress(bool compressed, Int &privKey) {
 
   unsigned char address[38];
 

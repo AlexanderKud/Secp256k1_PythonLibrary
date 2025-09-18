@@ -20,11 +20,21 @@ extern "C" {
         std::cout << ::secp256k1->GetPublicKeyHex(true, P) << std::endl;
     }
     
-    void scalar_multiplication(char* priv, unsigned char* publicKeyBytes) {
+    void scalar_multiplication(char* priv, unsigned char* publicKeyBytesIn) {
         Int pk;
         pk.SetBase10(priv);
         Point P = ::secp256k1->ComputePublicKey(&pk);
-        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytes);
+        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesIn);
+    }
+    
+    void point_to_upub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
+    }
+    
+    void point_to_cpub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        ::secp256k1->GetPubKeyBytes(true, P, publicKeyBytesOut);
     }
     /*
     const char* ret_str() {
