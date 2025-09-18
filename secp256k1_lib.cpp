@@ -44,5 +44,10 @@ extern "C" {
         Point P = ::secp256k1->ComputePublicKey(&pk);
         ::secp256k1->GetHash160(type, compressed, P, BytesOut);
     }
+    
+    void publickey_to_hash160(int type, bool compressed, unsigned char* publicKeyBytesIn, unsigned char* BytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        ::secp256k1->GetHash160(type, compressed, P, BytesOut);
+    }
 
 }
