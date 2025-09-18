@@ -26,7 +26,7 @@ public:
     Point &k0, Point &k1, Point &k2, Point &k3,
     uint8_t *h0, uint8_t *h1, uint8_t *h2, uint8_t *h3);
 
-  void GetHash160(int type,bool compressed, Point &pubKey, unsigned char *hash);
+  void GetHash160(int type, bool compressed, Point &pubKey, unsigned char *hash);
 
   std::string GetAddress(int type, bool compressed, Point &pubKey);
   std::string GetAddress(int type, bool compressed, unsigned char *hash160);

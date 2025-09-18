@@ -14,6 +14,9 @@ secp256k1.point_to_upub.restype = None
 secp256k1.point_to_cpub.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.point_to_cpub.restype = None
 
+secp256k1.privatekey_to_hash160.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.privatekey_to_hash160.restype = None
+
 secp256k1.Init()
 
 def check():
@@ -33,4 +36,10 @@ def point_to_upub(pBytes):
 def point_to_cpub(pBytes):
     res = (b'\x00') * 33
     secp256k1.point_to_cpub(pBytes, res)
+    return res.hex()
+
+def privatekey_to_hash160(addr_type, compressed, pk):
+    pvk = str(pk).encode('utf8')
+    res = (b'\x00') * 20
+    secp256k1.privatekey_to_hash160(addr_type, compressed, pvk, res)
     return res.hex()

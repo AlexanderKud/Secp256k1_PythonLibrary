@@ -652,13 +652,13 @@ std::string Secp256K1::GetPrivAddress(bool compressed, Int &privKey) {
     // compressed suffix
     address[33] = 1;
     sha256_checksum(address, 34, address + 34);
-    return EncodeBase58(address,address + 38);
+    return EncodeBase58(address, address + 38);
 
   } else {
 
     // Compute checksum
     sha256_checksum(address, 33, address + 33);
-    return EncodeBase58(address,address + 37);
+    return EncodeBase58(address, address + 37);
 
   }
 
