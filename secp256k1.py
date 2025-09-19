@@ -75,19 +75,19 @@ def check():
     secp256k1.check()
     
 def scalar_multiplication(pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 65
     secp256k1.scalar_multiplication(pvk, res)
     return bytes(bytearray(res))
 
 def point_multiplication(p, pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 65
     secp256k1.point_multiplication(p, pvk, res)
     return bytes(bytearray(res))
 
 def point_division(p, pk):
-    pvk = str(multiplicative_inverse(pk)).encode('utf8')
+    pvk = str(multiplicative_inverse(pk)).encode()
     res = (b'\x00') * 65
     secp256k1.point_multiplication(p, pvk, res)
     return bytes(bytearray(res))
@@ -123,13 +123,13 @@ def add_points_safe(p1, p2):
     return bytes(bytearray(res))
 
 def add_point_scalar(p, pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 65
     secp256k1.add_point_scalar(p, pvk, res)
     return bytes(bytearray(res))
 
 def add_point_scalar_safe(p, pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 65
     secp256k1.add_point_scalar_safe(p, pvk, res)
     return bytes(bytearray(res))
@@ -145,13 +145,13 @@ def subtract_points_safe(p1, p2):
     return bytes(bytearray(res))
 
 def subtract_point_scalar(p, pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 65
     secp256k1.subtract_point_scalar(p, pvk, res)
     return bytes(bytearray(res))
 
 def subtract_point_scalar_safe(p, pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 65
     secp256k1.subtract_point_scalar_safe(p, pvk, res)
     return bytes(bytearray(res))
@@ -167,7 +167,7 @@ def decrement_point(pBytes):
     return bytes(bytearray(res))
 
 def privatekey_to_hash160(addr_type, compressed, pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 20
     secp256k1.privatekey_to_hash160(addr_type, compressed, pvk, res)
     return bytes(bytearray(res)).hex()
@@ -178,13 +178,13 @@ def publickey_to_hash160(addr_type, compressed, pBytes):
     return bytes(bytearray(res)).hex()
 
 def privatekey_to_uwif(pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 51
     secp256k1.privatekey_to_uwif(pvk, res)
     return bytes(bytearray(res)).decode()
 
 def privatekey_to_cwif(pk):
-    pvk = str(pk).encode('utf8')
+    pvk = str(pk).encode()
     res = (b'\x00') * 52
     secp256k1.privatekey_to_cwif(pvk, res)
     return bytes(bytearray(res)).decode()
