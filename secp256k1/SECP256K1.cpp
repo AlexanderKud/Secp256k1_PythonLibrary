@@ -834,6 +834,20 @@ bool Secp256K1::CheckPudAddress(std::string address) {
 
 }
 
+Point Secp256K1::PointMultiplication(Point &P, Int *scalar) {
+  Point R, T;
+  int  no_of_bits, loop;
+  no_of_bits = scalar->GetBitLength();
+  R.Set(P); R.z.SetInt32(1);
+  T.Set(P); T.z.SetInt32(1);
+  for(loop = no_of_bits - 2; loop >= 0; loop--) {
+      R = Double(R);
+      if(scalar->GetBit(loop)) { R = Add2(R, T); }        
+  }
+  R.Reduce();
+  return R;
+}
+
 Point Secp256K1::AddDirect(Point &p1, Point &p2) {
 
   Int _s;

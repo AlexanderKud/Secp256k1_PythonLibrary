@@ -33,4 +33,8 @@ P1 = secp256k1.subtract_points(P3, P2)
 print(f'P1: {secp256k1.point_to_upub(P1)}') # uncompressed pubkey
 PP = secp256k1.subtract_point_scalar(P3, 1)
 print(f'PP: {secp256k1.point_to_upub(PP)}') # uncompressed pubkey
+Pm = secp256k1.point_multiplication(P3, 8)
+print(f'Pm: {secp256k1.point_to_upub(Pm)}') # uncompressed pubkey
+Pd = secp256k1.point_division(Pm, 2)
+print(f'Pm: {secp256k1.point_to_upub(Pd)}') # uncompressed pubkey
 
