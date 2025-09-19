@@ -48,3 +48,9 @@ print(f'subP1: {secp256k1.point_to_upub(subP1)}') # uncompressed pubkey
 
 subP2 = secp256k1.subtract_points_safe(P1, P1)
 print(f'subP2: {secp256k1.point_to_upub(subP2)}') # uncompressed pubkey
+
+addPs = secp256k1.add_point_scalar_safe(P1, 1024)
+print(f'addPs: {secp256k1.point_to_upub(addPs)}') # uncompressed pubkey
+
+subPs = secp256k1.subtract_point_scalar_safe(addPs, 9)
+print(f'subPs: {secp256k1.point_to_upub(subPs)}') # uncompressed pubkey

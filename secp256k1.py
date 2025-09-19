@@ -8,6 +8,9 @@ secp256k1.check.restype = None
 secp256k1.scalar_multiplication.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.scalar_multiplication.restype = None
 
+secp256k1.point_multiplication.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.point_multiplication.restype = None
+
 secp256k1.point_to_upub.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.point_to_upub.restype = None
 
@@ -29,6 +32,9 @@ secp256k1.add_points_safe.restype = None
 secp256k1.add_point_scalar.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.add_point_scalar.restype = None
 
+secp256k1.add_point_scalar_safe.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.add_point_scalar_safe.restype = None
+
 secp256k1.subtract_points.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.subtract_points.restype = None
 
@@ -38,8 +44,8 @@ secp256k1.subtract_points_safe.restype = None
 secp256k1.subtract_point_scalar.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.subtract_point_scalar.restype = None
 
-secp256k1.point_multiplication.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
-secp256k1.point_multiplication.restype = None
+secp256k1.subtract_point_scalar_safe.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.subtract_point_scalar_safe.restype = None
 
 secp256k1.privatekey_to_hash160.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.privatekey_to_hash160.restype = None
@@ -60,6 +66,18 @@ def scalar_multiplication(pk):
     pvk = str(pk).encode('utf8')
     res = (b'\x00') * 65
     secp256k1.scalar_multiplication(pvk, res)
+    return bytes(bytearray(res))
+
+def point_multiplication(p, pk):
+    pvk = str(pk).encode('utf8')
+    res = (b'\x00') * 65
+    secp256k1.point_multiplication(p, pvk, res)
+    return bytes(bytearray(res))
+
+def point_division(p, pk):
+    pvk = str(multiplicative_inverse(pk)).encode('utf8')
+    res = (b'\x00') * 65
+    secp256k1.point_multiplication(p, pvk, res)
     return bytes(bytearray(res))
 
 def point_to_upub(pBytes):
@@ -98,6 +116,12 @@ def add_point_scalar(p, pk):
     secp256k1.add_point_scalar(p, pvk, res)
     return bytes(bytearray(res))
 
+def add_point_scalar_safe(p, pk):
+    pvk = str(pk).encode('utf8')
+    res = (b'\x00') * 65
+    secp256k1.add_point_scalar(p, pvk, res)
+    return bytes(bytearray(res))
+
 def subtract_points(p1, p2):
     res = (b'\x00') * 65
     secp256k1.subtract_points(p1, p2, res)
@@ -114,16 +138,10 @@ def subtract_point_scalar(p, pk):
     secp256k1.subtract_point_scalar(p, pvk, res)
     return bytes(bytearray(res))
 
-def point_multiplication(p, pk):
+def subtract_point_scalar_safe(p, pk):
     pvk = str(pk).encode('utf8')
     res = (b'\x00') * 65
-    secp256k1.point_multiplication(p, pvk, res)
-    return bytes(bytearray(res))
-
-def point_division(p, pk):
-    pvk = str(multiplicative_inverse(pk)).encode('utf8')
-    res = (b'\x00') * 65
-    secp256k1.point_multiplication(p, pvk, res)
+    secp256k1.subtract_point_scalar(p, pvk, res)
     return bytes(bytearray(res))
 
 def privatekey_to_hash160(addr_type, compressed, pk):

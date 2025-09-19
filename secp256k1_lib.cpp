@@ -28,6 +28,14 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
     }
     
+    void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        Int pk;
+        pk.SetBase10(priv);
+        Point ret = ::secp256k1->PointMultiplication(P, &pk);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
     void point_to_upub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
@@ -73,6 +81,15 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
+    void add_point_scalar_safe(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
+        Int pk;
+        pk.SetBase10(priv);
+        Point Q = ::secp256k1->ComputePublicKey(&pk);
+        Point ret = ::secp256k1->AddPoints2(P, Q);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
     void subtract_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
         Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
@@ -96,11 +113,12 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
-    void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+    void subtract_point_scalar_safe(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
         Int pk;
         pk.SetBase10(priv);
-        Point ret = ::secp256k1->PointMultiplication(P, &pk);
+        Point Q = ::secp256k1->ComputePublicKey(&pk);
+        Point ret = ::secp256k1->SubtractPoints(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
