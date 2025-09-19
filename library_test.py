@@ -37,4 +37,14 @@ Pm = secp256k1.point_multiplication(P3, 8)
 print(f'Pm: {secp256k1.point_to_upub(Pm)}') # uncompressed pubkey
 Pd = secp256k1.point_division(Pm, 2)
 print(f'Pm: {secp256k1.point_to_upub(Pd)}') # uncompressed pubkey
+infinityP = secp256k1.add_points_safe(P5, P5_neg)
+print(f'infinityP: {secp256k1.point_to_upub(infinityP)}') # uncompressed pubkey
 
+addP1 = secp256k1.add_points_safe(infinityP, P1)
+print(f'addP1: {secp256k1.point_to_upub(addP1)}') # uncompressed pubkey
+
+subP1 = secp256k1.subtract_points_safe(infinityP, P1)
+print(f'subP1: {secp256k1.point_to_upub(subP1)}') # uncompressed pubkey
+
+subP2 = secp256k1.subtract_points_safe(P1, P1)
+print(f'subP2: {secp256k1.point_to_upub(subP2)}') # uncompressed pubkey

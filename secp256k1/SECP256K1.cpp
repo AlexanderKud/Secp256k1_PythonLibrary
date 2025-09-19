@@ -747,7 +747,7 @@ std::vector<std::string> Secp256K1::GetAddress(int type, bool compressed, unsign
 
 }
 
-std::string Secp256K1::GetAddress(int type, bool compressed,unsigned char *hash160) {
+std::string Secp256K1::GetAddress(int type, bool compressed, unsigned char *hash160) {
 
   unsigned char address[25];
   switch(type) {
@@ -898,12 +898,69 @@ Point Secp256K1::AddPoints(Point &p1, Point &p2) {
 
 }
 
+Point Secp256K1::AddPoints2(Point &p1, Point &p2) {
+
+  Int _s, dx, dy;
+  Point r;
+  r.z.SetInt32(1);
+  Int _ZERO((uint64_t)0);
+
+  if (p1.equals(p2)) {
+    r = DoubleDirect(p1);
+    return r;
+  }
+  
+  if (p1.x.IsEqual(&p2.x)) {
+      r.x.SetInt32(0);
+      r.y.SetInt32(0);
+      return r;
+  }
+  
+  if (p1.x.IsEqual(&_ZERO)) {
+      r.x.Set(&p2.x);
+      r.y.Set(&p2.y);
+      return r;
+  }
+  
+  if (p2.x.IsEqual(&_ZERO)) {
+      r.x.Set(&p1.x);
+      r.y.Set(&p1.y);
+      return r;
+  }
+
+
+  dy.ModSub(&p2.y, &p1.y);
+  dx.ModSub(&p2.x, &p1.x);
+  dx.ModInv();
+  _s.ModMulK1(&dy, &dx);     // s = (p2.y-p1.y)*inverse(p2.x-p1.x);
+
+  r.x.ModSquareK1(&_s);       // _p = pow2(s)
+  r.x.ModSub(&p1.x);
+  r.x.ModSub(&p2.x);       // rx = pow2(s) - p1.x - p2.x;
+
+  r.y.ModSub(&p2.x, &r.x);
+  r.y.ModMulK1(&_s);
+  r.y.ModSub(&p2.y);       // ry = - p2.y - s*(ret.x-p2.x);
+
+  return r;
+
+}
+
 Point Secp256K1::SubtractPoints(Point &p1, Point &p2) {
   Point Q1, Q2;
   Q1.Set(p2);
   Q1.y.ModNeg();
   Q1.z.SetInt32(1);
   Q2 = AddPoints(p1, Q1);
+  return Q2;
+}
+
+Point Secp256K1::SubtractPoints2(Point &p1, Point &p2) {
+  Point Q1, Q2;
+  Q1.Set(p2);
+  Q1.y.ModNeg();
+  Q1.z.SetInt32(1);
+  Q2 = AddPoints2(p1, Q1);
   return Q2;
 }
 

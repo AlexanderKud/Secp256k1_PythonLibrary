@@ -57,6 +57,13 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
+    void add_points_safe(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
+        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
+        Point ret = ::secp256k1->AddPoints2(P, Q);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
     void add_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
         Int pk;
@@ -70,6 +77,13 @@ extern "C" {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
         Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
         Point ret = ::secp256k1->SubtractPoints(P, Q);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
+    void subtract_points_safe(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
+        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
+        Point ret = ::secp256k1->SubtractPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     

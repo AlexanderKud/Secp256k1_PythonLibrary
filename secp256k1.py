@@ -23,14 +23,20 @@ secp256k1.double_point.restype = None
 secp256k1.add_points.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.add_points.restype = None
 
+secp256k1.add_points_safe.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.add_points_safe.restype = None
+
 secp256k1.add_point_scalar.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.add_point_scalar.restype = None
 
 secp256k1.subtract_points.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
-secp256k1.add_points.restype = None
+secp256k1.subtract_points.restype = None
+
+secp256k1.subtract_points_safe.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.subtract_points_safe.restype = None
 
 secp256k1.subtract_point_scalar.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
-secp256k1.add_point_scalar.restype = None
+secp256k1.subtract_point_scalar.restype = None
 
 secp256k1.point_multiplication.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.point_multiplication.restype = None
@@ -81,6 +87,11 @@ def add_points(p1, p2):
     secp256k1.add_points(p1, p2, res)
     return bytes(bytearray(res))
 
+def add_points_safe(p1, p2):
+    res = (b'\x00') * 65
+    secp256k1.add_points_safe(p1, p2, res)
+    return bytes(bytearray(res))
+
 def add_point_scalar(p, pk):
     pvk = str(pk).encode('utf8')
     res = (b'\x00') * 65
@@ -90,6 +101,11 @@ def add_point_scalar(p, pk):
 def subtract_points(p1, p2):
     res = (b'\x00') * 65
     secp256k1.subtract_points(p1, p2, res)
+    return bytes(bytearray(res))
+
+def subtract_points_safe(p1, p2):
+    res = (b'\x00') * 65
+    secp256k1.subtract_points_safe(p1, p2, res)
     return bytes(bytearray(res))
 
 def subtract_point_scalar(p, pk):
