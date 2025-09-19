@@ -47,6 +47,12 @@ secp256k1.subtract_point_scalar.restype = None
 secp256k1.subtract_point_scalar_safe.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.subtract_point_scalar_safe.restype = None
 
+secp256k1.increment_point.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.increment_point.restype = None
+
+secp256k1.decrement_point.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.decrement_point.restype = None
+
 secp256k1.privatekey_to_hash160.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.privatekey_to_hash160.restype = None
 
@@ -142,6 +148,16 @@ def subtract_point_scalar_safe(p, pk):
     pvk = str(pk).encode('utf8')
     res = (b'\x00') * 65
     secp256k1.subtract_point_scalar(p, pvk, res)
+    return bytes(bytearray(res))
+
+def increment_point(pBytes):
+    res = (b'\x00') * 65
+    secp256k1.increment_point(pBytes, res)
+    return bytes(bytearray(res))
+
+def decrement_point(pBytes):
+    res = (b'\x00') * 65
+    secp256k1.decrement_point(pBytes, res)
     return bytes(bytearray(res))
 
 def privatekey_to_hash160(addr_type, compressed, pk):

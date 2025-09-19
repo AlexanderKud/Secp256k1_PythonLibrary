@@ -29,7 +29,7 @@ extern "C" {
     }
     
     void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); P.z.SetInt32(1);
         Int pk;
         pk.SetBase10(priv);
         Point ret = ::secp256k1->PointMultiplication(P, &pk);
@@ -59,21 +59,21 @@ extern "C" {
     }
     
     void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1);
         Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
         Point ret = ::secp256k1->AddPoints(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void add_points_safe(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
-        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); P.z.SetInt32(1);
+        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2); Q.z.SetInt32(1);
         Point ret = ::secp256k1->AddPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void add_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
         pk.SetBase10(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
@@ -82,7 +82,7 @@ extern "C" {
     }
     
     void add_point_scalar_safe(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); P.z.SetInt32(1);
         Int pk;
         pk.SetBase10(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
@@ -91,21 +91,21 @@ extern "C" {
     }
     
     void subtract_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1);
         Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
         Point ret = ::secp256k1->SubtractPoints(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void subtract_points_safe(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
-        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); P.z.SetInt32(1);
+        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2); Q.z.SetInt32(1);
         Point ret = ::secp256k1->SubtractPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void subtract_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
         pk.SetBase10(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
@@ -114,11 +114,23 @@ extern "C" {
     }
     
     void subtract_point_scalar_safe(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); 
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); P.z.SetInt32(1);
         Int pk;
         pk.SetBase10(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
         Point ret = ::secp256k1->SubtractPoints2(P, Q);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
+    void increment_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); P.z.SetInt32(1);
+        Point ret = ::secp256k1->AddPoints2(P, ::secp256k1->G);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
+    void decrement_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn); P.z.SetInt32(1);
+        Point ret = ::secp256k1->SubtractPoints2(P, ::secp256k1->G);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
