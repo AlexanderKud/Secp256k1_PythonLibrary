@@ -180,14 +180,14 @@ def decrement_point(pBytes):
 
 def privatekey_to_hash160(addr_type, compressed, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 20
+    res = bytes(b'\x00') * 20
     secp256k1.privatekey_to_hash160(addr_type, compressed, pvk, res)
-    return bytes(bytearray(res)).hex()
+    return res.hex()
     
 def publickey_to_hash160(addr_type, compressed, pBytes):
-    res = (b'\x00') * 20
+    res = bytes(b'\x00') * 20
     secp256k1.publickey_to_hash160(addr_type, compressed, pBytes, res)
-    return bytes(bytearray(res)).hex()
+    return res.hex()
 
 def privatekey_to_uwif(pk):
     pvk = str(pk).encode()
