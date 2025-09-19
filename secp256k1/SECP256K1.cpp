@@ -185,7 +185,7 @@ Point Secp256K1::NextKey(Point &key) {
   return AddDirect(key,G);
 }
 
-Int Secp256K1::DecodePrivateKey(char *key,bool *compressed) {
+Int Secp256K1::DecodePrivateKey(char *key, bool *compressed) {
 
   Int ret;
   ret.SetInt32(0);
@@ -432,7 +432,7 @@ uint8_t Secp256K1::GetByte(std::string &str, int idx) {
 
 }
 
-Point Secp256K1::ParsePublicKeyHex(std::string str,bool &isCompressed) {
+Point Secp256K1::ParsePublicKeyHex(std::string str, bool &isCompressed) {
 
   Point ret;
   ret.Clear();
@@ -522,7 +522,7 @@ void Secp256K1::GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* pu
 Point Secp256K1::SetPubKeyBytes(unsigned char* publicKeyBytesIn)
 {
     Point ret;
-    ret.z.SetInt32(1);
+    //ret.z.SetInt32(1);
     ret.x.Set32Bytes(publicKeyBytesIn + 1);
     ret.y.Set32Bytes(publicKeyBytesIn + 33);
     return ret;
@@ -834,7 +834,7 @@ bool Secp256K1::CheckPudAddress(std::string address) {
 
 }
 
-Point Secp256K1::AddDirect(Point &p1,Point &p2) {
+Point Secp256K1::AddDirect(Point &p1, Point &p2) {
 
   Int _s;
   Int _p;
@@ -843,17 +843,40 @@ Point Secp256K1::AddDirect(Point &p1,Point &p2) {
   Point r;
   r.z.SetInt32(1);
 
-  dy.ModSub(&p2.y,&p1.y);
-  dx.ModSub(&p2.x,&p1.x);
+  dy.ModSub(&p2.y, &p1.y);
+  dx.ModSub(&p2.x, &p1.x);
   dx.ModInv();
-  _s.ModMulK1(&dy,&dx);     // s = (p2.y-p1.y)*inverse(p2.x-p1.x);
+  _s.ModMulK1(&dy, &dx);     // s = (p2.y-p1.y)*inverse(p2.x-p1.x);
 
   _p.ModSquareK1(&_s);       // _p = pow2(s)
 
-  r.x.ModSub(&_p,&p1.x);
+  r.x.ModSub(&_p, &p1.x);
   r.x.ModSub(&p2.x);       // rx = pow2(s) - p1.x - p2.x;
 
-  r.y.ModSub(&p2.x,&r.x);
+  r.y.ModSub(&p2.x, &r.x);
+  r.y.ModMulK1(&_s);
+  r.y.ModSub(&p2.y);       // ry = - p2.y - s*(ret.x-p2.x);
+
+  return r;
+
+}
+
+Point Secp256K1::AddPoints(Point &p1, Point &p2) {
+
+  Int _s, dx, dy;
+  Point r;
+  r.z.SetInt32(1);
+
+  dy.ModSub(&p2.y, &p1.y);
+  dx.ModSub(&p2.x, &p1.x);
+  dx.ModInv();
+  _s.ModMulK1(&dy, &dx);     // s = (p2.y-p1.y)*inverse(p2.x-p1.x);
+
+  r.x.ModSquareK1(&_s);       // _p = pow2(s)
+  r.x.ModSub(&p1.x);
+  r.x.ModSub(&p2.x);       // rx = pow2(s) - p1.x - p2.x;
+
+  r.y.ModSub(&p2.x, &r.x);
   r.y.ModMulK1(&_s);
   r.y.ModSub(&p2.y);       // ry = - p2.y - s*(ret.x-p2.x);
 
@@ -982,23 +1005,23 @@ Point Secp256K1::DoubleDirect(Point &p) {
   Point r;
   r.z.SetInt32(1);
 
-  _s.ModMulK1(&p.x,&p.x);
-  _p.ModAdd(&_s,&_s);
+  _s.ModMulK1(&p.x, &p.x);
+  _p.ModAdd(&_s, &_s);
   _p.ModAdd(&_s);
 
-  a.ModAdd(&p.y,&p.y);
+  a.ModAdd(&p.y, &p.y);
   a.ModInv();
-  _s.ModMulK1(&_p,&a);     // s = (3*pow2(p.x))*inverse(2*p.y);
+  _s.ModMulK1(&_p, &a);     // s = (3*pow2(p.x))*inverse(2*p.y);
 
-  _p.ModMulK1(&_s,&_s);
-  a.ModAdd(&p.x,&p.x);
+  _p.ModMulK1(&_s, &_s);
+  a.ModAdd(&p.x, &p.x);
   a.ModNeg();
-  r.x.ModAdd(&a,&_p);    // rx = pow2(s) + neg(2*p.x);
+  r.x.ModAdd(&a, &_p);    // rx = pow2(s) + neg(2*p.x);
 
-  a.ModSub(&r.x,&p.x);
+  a.ModSub(&r.x, &p.x);
 
-  _p.ModMulK1(&a,&_s);
-  r.y.ModAdd(&_p,&p.y);
+  _p.ModMulK1(&a, &_s);
+  r.y.ModAdd(&_p, &p.y);
   r.y.ModNeg();           // ry = neg(p.y + s*(ret.x+neg(p.x)));
 
   return r;

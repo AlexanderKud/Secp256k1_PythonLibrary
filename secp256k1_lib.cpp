@@ -21,11 +21,11 @@ extern "C" {
         std::cout << ::secp256k1->GetPublicKeyHex(true, P) << std::endl;
     }
     
-    void scalar_multiplication(char* priv, unsigned char* publicKeyBytesIn) {
+    void scalar_multiplication(char* priv, unsigned char* publicKeyBytesOut) {
         Int pk;
         pk.SetBase10(priv);
         Point P = ::secp256k1->ComputePublicKey(&pk);
-        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesIn);
+        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
     }
     
     void point_to_upub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
@@ -36,6 +36,25 @@ extern "C" {
     void point_to_cpub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         ::secp256k1->GetPubKeyBytes(true, P, publicKeyBytesOut);
+    }
+    
+    void double_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        P = ::secp256k1->DoubleDirect(P);
+        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
+    }
+    
+    void negate_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        P.y.ModNeg();
+        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
+    }
+    
+    void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
+        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
+        Point ret = ::secp256k1->AddPoints(P, Q);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut) {
@@ -49,5 +68,5 @@ extern "C" {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         ::secp256k1->GetHash160(type, compressed, P, BytesOut);
     }
-
+    
 }

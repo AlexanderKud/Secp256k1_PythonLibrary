@@ -14,7 +14,17 @@ BECH32 2
 print(secp256k1.privatekey_to_hash160(0, False, pk)) # uncompressed ripemd160 hash
 print(secp256k1.privatekey_to_hash160(0, True, pk))  # compressed ripemd160 hash
 print()
-Q = secp256k1.scalar_multiplication(33)
-print(secp256k1.publickey_to_hash160(0, False, Q)) # uncompressed ripemd160 hash
-print(secp256k1.publickey_to_hash160(0, True, Q))  # compressed ripemd160 hash
+P2 = secp256k1.scalar_multiplication(2)
+print(f'P2: {secp256k1.point_to_upub(P2)}') # uncompressed pubkey
+print(secp256k1.privatekey_to_hash160(0, False, 4)) # uncompressed ripemd160 hash
+print(secp256k1.privatekey_to_hash160(0, True, 4))  # compressed ripemd160 hash
+print()
+P3 = secp256k1.scalar_multiplication(3)
+print(f'P3: {secp256k1.point_to_upub(P3)}') # uncompressed pubkey
+print()
+P5 = secp256k1.add_points(P2 ,P3)
+print(f'P5: {secp256k1.point_to_upub(P5)}') # uncompressed pubkey
+P5_neg = secp256k1.negate_point(P5)
+print()
+print(f'P5_neg: {secp256k1.point_to_upub(P5_neg)}') # uncompressed pubkey
 

@@ -45,6 +45,7 @@ public:
   Point Add(Point &p1, Point &p2);
   Point Add2(Point &p1, Point &p2);
   Point AddDirect(Point &p1, Point &p2);
+  Point AddPoints(Point &p1, Point &p2);
   Point Double(Point &p);
   Point DoubleDirect(Point &p);
 
