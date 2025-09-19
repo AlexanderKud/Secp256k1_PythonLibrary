@@ -65,6 +65,9 @@ secp256k1.privatekey_to_uwif.restype = None
 secp256k1.privatekey_to_cwif.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.privatekey_to_cwif.restype = None
 
+secp256k1.privatekey_to_wif.argtypes = [ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.privatekey_to_wif.restype = None
+
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 def multiplicative_inverse(x):
     return pow(x, N - 2, N)
@@ -187,4 +190,11 @@ def privatekey_to_cwif(pk):
     pvk = str(pk).encode()
     res = (b'\x00') * 52
     secp256k1.privatekey_to_cwif(pvk, res)
+    return bytes(bytearray(res)).decode()
+
+def privatekey_to_wif(compressed, pk):
+    pvk = str(pk).encode()
+    res = (b'\x00') * 53
+    secp256k1.privatekey_to_wif(compressed, pvk, res)
+    res = res.replace(b'\x00', b'')
     return bytes(bytearray(res)).decode()

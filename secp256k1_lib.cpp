@@ -172,5 +172,14 @@ extern "C" {
             BytesOut[i] = wif[i];
         }
     }
+    
+    void privatekey_to_wif(bool compressed, char* priv, unsigned char* BytesOut) {
+        Int pk;
+        pk.SetBase10(priv);
+        std::string wif = ::secp256k1->GetPrivAddress(compressed, pk);
+        for(int i = 0; i < wif.size(); i++) {
+            BytesOut[i] = wif[i];
+        }
+    }
       
 }

@@ -82,3 +82,12 @@ wiff = "L5iGPF2Ktx92hBbmvMsFBUNntd4vENWKFN3dyc5M8edEhenMRnbz"
 wiffc = secp256k1.privatekey_to_cwif(114611115102251689443574372519848189708031905844456858542872688930023724442114)
 print(wiffc)
 print(wiff == wiffc)
+
+wifu = secp256k1.privatekey_to_wif(False, 4)
+wifc = secp256k1.privatekey_to_wif(True, 4)
+print(len(wifu))
+print(len(wifc))
+print(wifu)
+print(wifu == "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreB4AD8Yi")
+print(wifc)
+print(wifc == "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU75NBY2dKG")
