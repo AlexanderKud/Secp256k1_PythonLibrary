@@ -41,6 +41,7 @@ public:
   bool CheckPudAddress(std::string address);
 
   static Int DecodePrivateKey(char *key, bool *compressed);
+  static Int DecodePrivateKey2(char *key);
   
   Point PointMultiplication(Point &P, Int *scalar);
   Point Add(Point &p1, Point &p2);

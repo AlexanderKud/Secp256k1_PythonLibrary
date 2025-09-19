@@ -190,5 +190,23 @@ extern "C" {
             BytesOut[i] = pvk[i];
         }
     }
+    
+    void privatekey_to_address(int type, bool compressed, char* priv, unsigned char* BytesOut) {
+        Int pk;
+        pk.SetBase10(priv);
+        Point P = ::secp256k1->ComputePublicKey(&pk);
+        std::string address = ::secp256k1->GetAddress(type, compressed, P);
+        for(int i = 0; i < address.size(); i++) {
+            BytesOut[i] = address[i];
+        }
+    }
+    
+    void publickey_to_address(int type, bool compressed, unsigned char* publicKeyBytesIn, unsigned char* BytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        std::string address = ::secp256k1->GetAddress(type, compressed, P);
+        for(int i = 0; i < address.size(); i++) {
+            BytesOut[i] = address[i];
+        }
+    }
       
 }

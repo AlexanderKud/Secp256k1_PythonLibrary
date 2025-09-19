@@ -62,7 +62,7 @@ decP = secp256k1.decrement_point(P3)
 print(f'decP: {secp256k1.point_to_upub(decP)}') # uncompressed pubkey
 
 wif0 = "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf"
-wif1 = secp256k1.privatekey_to_uwif(1)
+wif1 = secp256k1.privatekey_to_cwif(1)
 print(wif1)
 print(wif0 == wif1)
 
@@ -96,3 +96,21 @@ pk1 = secp256k1.wif_to_privatekey("5K2jRkYtEju8Ds2Y3HwwNBut1a6vADjy6B4Eu5N8NZbki
 print(pk1)
 pk2 = secp256k1.wif_to_privatekey("L5oLkpV3aqBjhki6LmvChTCV6odsp4SXM6FfU2Gppt5kFLaHLuZ9")
 print(pk2)
+
+pvk = 33
+print(secp256k1.privatekey_to_address(0, False, pvk))
+print(secp256k1.privatekey_to_address(0, True, pvk))
+print(secp256k1.privatekey_to_address(1, True, pvk))
+print(secp256k1.privatekey_to_address(2, True, pvk))
+
+pnt = secp256k1.scalar_multiplication(77)
+print(secp256k1.publickey_to_address(0, False, pnt))
+print(secp256k1.publickey_to_address(0, True, pnt))
+print(secp256k1.publickey_to_address(1, True, pnt))
+print(secp256k1.publickey_to_address(2, True, pnt))
+
+pnt = secp256k1.scalar_multiplication(7777)
+print(secp256k1.publickey_to_address(0, False, pnt))
+print(secp256k1.publickey_to_address(0, True, pnt))
+print(secp256k1.publickey_to_address(1, True, pnt))
+print(secp256k1.publickey_to_address(2, True, pnt))

@@ -71,6 +71,12 @@ secp256k1.privatekey_to_wif.restype = None
 secp256k1.wif_to_privatekey.argtypes = [ctypes.c_char_p]
 secp256k1.wif_to_privatekey.restype = None
 
+secp256k1.privatekey_to_address.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.privatekey_to_address.restype = None
+
+secp256k1.publickey_to_address.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.publickey_to_address.restype = None
+
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 def multiplicative_inverse(x):
     return pow(x, N - 2, N)
@@ -208,3 +214,17 @@ def wif_to_privatekey(wif):
     secp256k1.wif_to_privatekey(pvk, res)
     res = res.replace(b'\x00', b'')
     return int(bytes(bytearray(res)).decode())
+
+def privatekey_to_address(addr_type, compressed, pk):
+    pvk = str(pk).encode()
+    res = (b'\x00') * 45
+    secp256k1.privatekey_to_address(addr_type, compressed, pvk, res)
+    res = res.replace(b'\x00', b'')
+    return bytes(bytearray(res)).decode()
+    
+def publickey_to_address(addr_type, compressed, p):
+    res = (b'\x00') * 45
+    secp256k1.publickey_to_address(addr_type, compressed, p, res)
+    res = res.replace(b'\x00', b'')
+    return bytes(bytearray(res)).decode()
+    

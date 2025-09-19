@@ -256,6 +256,75 @@ Int Secp256K1::DecodePrivateKey(char *key, bool *compressed) {
 
 }
 
+Int Secp256K1::DecodePrivateKey2(char *key) {
+
+  Int ret;
+  ret.SetInt32(0);
+  std::vector<unsigned char> privKey;
+
+  if(key[0] == '5') {
+
+    // Not compressed
+    DecodeBase58(key,privKey);
+    if(privKey.size() != 37) {
+      printf("Invalid private key, size != 37 (size=%d)!\n",(int)privKey.size());
+      ret.SetInt32(-1);
+      return ret;
+    }
+
+    if(privKey[0] != 0x80) {
+      printf("Invalid private key, wrong prefix !\n");
+      return ret;
+    }
+
+    int count = 31;
+    for(int i = 1; i < 33; i++)
+      ret.SetByte(count--,privKey[i]);
+
+    // Compute checksum
+    unsigned char c[4];
+    sha256_checksum(privKey.data(), 33, c);
+
+    if( c[0]!=privKey[33] || c[1]!=privKey[34] ||
+        c[2]!=privKey[35] || c[3]!=privKey[36] ) {
+      printf("Warning, Invalid private key checksum !\n");
+    }
+
+    return ret;
+
+  } else if(key[0] == 'K' || key[0] == 'L') {
+
+    // Compressed
+    DecodeBase58(key,privKey);
+    if(privKey.size() != 38) {
+      printf("Invalid private key, size != 38 (size=%d)!\n",(int)privKey.size());
+      ret.SetInt32(-1);
+      return ret;
+    }
+
+    int count = 31;
+    for(int i = 1; i < 33; i++)
+      ret.SetByte(count--,privKey[i]);
+
+    // Compute checksum
+    unsigned char c[4];
+    sha256_checksum(privKey.data(), 34, c);
+
+    if( c[0]!=privKey[34] || c[1]!=privKey[35] ||
+        c[2]!=privKey[36] || c[3]!=privKey[37] ) {
+      printf("Warning, Invalid private key checksum !\n");
+    }
+
+    return ret;
+
+  }
+
+  printf("Invalid private key, not starting with 5,K or L !\n");
+  ret.SetInt32(-1);
+  return ret;
+
+}
+
 #define KEYBUFFCOMP(buff,p) \
 (buff)[0] = ((p).x.bits[7] >> 8) | ((uint32_t)(0x2 + (p).y.IsOdd()) << 24); \
 (buff)[1] = ((p).x.bits[6] >> 8) | ((p).x.bits[7] <<24); \
