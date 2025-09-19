@@ -57,6 +57,15 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
+    void add_point_scalar(unsigned char* publicKeyBytesIn1, char* priv, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1); 
+        Int pk;
+        pk.SetBase10(priv);
+        Point Q = ::secp256k1->ComputePublicKey(&pk);
+        Point ret = ::secp256k1->AddPoints(P, Q);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
+    
     void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut) {
         Int pk;
         pk.SetBase10(priv);

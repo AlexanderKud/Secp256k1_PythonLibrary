@@ -27,4 +27,6 @@ print(f'P5: {secp256k1.point_to_upub(P5)}') # uncompressed pubkey
 P5_neg = secp256k1.negate_point(P5)
 print()
 print(f'P5_neg: {secp256k1.point_to_upub(P5_neg)}') # uncompressed pubkey
+PQ = secp256k1.add_point_scalar(P5, 25)
+print(f'PQ: {secp256k1.point_to_upub(PQ)}') # uncompressed pubkey
 

@@ -23,6 +23,9 @@ secp256k1.double_point.restype = None
 secp256k1.add_points.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.add_points.restype = None
 
+secp256k1.add_point_scalar.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.add_point_scalar.restype = None
+
 secp256k1.privatekey_to_hash160.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.privatekey_to_hash160.restype = None
 
@@ -63,6 +66,12 @@ def negate_point(pBytes):
 def add_points(p1, p2):
     res = (b'\x00') * 65
     secp256k1.add_points(p1, p2, res)
+    return bytes(bytearray(res))
+
+def add_point_scalar(p, pk):
+    pvk = str(pk).encode('utf8')
+    res = (b'\x00') * 65
+    secp256k1.add_point_scalar(p, pvk, res)
     return bytes(bytearray(res))
 
 def privatekey_to_hash160(addr_type, compressed, pk):
