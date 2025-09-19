@@ -118,7 +118,7 @@ extern "C" {
         Int pk;
         pk.SetBase10(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
-        Point ret = ::secp256k1->SubtractPoints(P, Q);
+        Point ret = ::secp256k1->SubtractPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
