@@ -43,12 +43,12 @@ def scalar_multiplication(pk):
 def point_to_upub(pBytes):
     res = (b'\x00') * 65
     secp256k1.point_to_upub(pBytes, res)
-    return res.hex()
+    return bytes(bytearray(res)).hex()
     
 def point_to_cpub(pBytes):
     res = (b'\x00') * 33
     secp256k1.point_to_cpub(pBytes, res)
-    return res.hex()
+    return bytes(bytearray(res)).hex()
 
 def double_point(pBytes):
     res = (b'\x00') * 65
@@ -69,9 +69,9 @@ def privatekey_to_hash160(addr_type, compressed, pk):
     pvk = str(pk).encode('utf8')
     res = (b'\x00') * 20
     secp256k1.privatekey_to_hash160(addr_type, compressed, pvk, res)
-    return res.hex()
+    return bytes(bytearray(res)).hex()
     
 def publickey_to_hash160(addr_type, compressed, pBytes):
     res = (b'\x00') * 20
     secp256k1.publickey_to_hash160(addr_type, compressed, pBytes, res)
-    return res.hex()
+    return bytes(bytearray(res)).hex()
