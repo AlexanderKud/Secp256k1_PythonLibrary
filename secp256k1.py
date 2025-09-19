@@ -210,20 +210,20 @@ def privatekey_to_wif(compressed, pk):
 
 def wif_to_privatekey(wif):
     pvk = wif.encode()
-    res = (b'\x00') * 80
+    res = bytes(b'\x00') * 80
     secp256k1.wif_to_privatekey(pvk, res)
     res = res.replace(b'\x00', b'')
-    return int(bytes(bytearray(res)).decode())
+    return bytes(bytearray(res)).decode()
 
 def privatekey_to_address(addr_type, compressed, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 45
+    res = bytes(b'\x00') * 45
     secp256k1.privatekey_to_address(addr_type, compressed, pvk, res)
     res = res.replace(b'\x00', b'')
     return bytes(bytearray(res)).decode()
     
 def publickey_to_address(addr_type, compressed, p):
-    res = (b'\x00') * 45
+    res = bytes(b'\x00') * 45
     secp256k1.publickey_to_address(addr_type, compressed, p, res)
     res = res.replace(b'\x00', b'')
     return bytes(bytearray(res)).decode()
