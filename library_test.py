@@ -22,11 +22,15 @@ print()
 P3 = secp256k1.scalar_multiplication(3)
 print(f'P3: {secp256k1.point_to_upub(P3)}') # uncompressed pubkey
 print()
-P5 = secp256k1.add_points(P2 ,P3)
+P5 = secp256k1.add_points(P2, P3)
 print(f'P5: {secp256k1.point_to_upub(P5)}') # uncompressed pubkey
 P5_neg = secp256k1.negate_point(P5)
 print()
 print(f'P5_neg: {secp256k1.point_to_upub(P5_neg)}') # uncompressed pubkey
 PQ = secp256k1.add_point_scalar(P5, 25)
 print(f'PQ: {secp256k1.point_to_upub(PQ)}') # uncompressed pubkey
+P1 = secp256k1.subtract_points(P3, P2)
+print(f'P1: {secp256k1.point_to_upub(P1)}') # uncompressed pubkey
+PP = secp256k1.subtract_point_scalar(P3, 1)
+print(f'PP: {secp256k1.point_to_upub(PP)}') # uncompressed pubkey
 

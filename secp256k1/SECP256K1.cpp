@@ -884,6 +884,15 @@ Point Secp256K1::AddPoints(Point &p1, Point &p2) {
 
 }
 
+Point Secp256K1::SubtractPoints(Point &p1, Point &p2) {
+  Point Q1, Q2;
+  Q1.Set(p2);
+  Q1.y.ModNeg();
+  Q1.z.SetInt32(1);
+  Q2 = AddPoints(p1, Q1);
+  return Q2;
+}
+
 Point Secp256K1::Add2(Point &p1, Point &p2) {
 
   // P2.z = 1
