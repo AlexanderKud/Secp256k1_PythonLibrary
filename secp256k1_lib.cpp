@@ -181,5 +181,14 @@ extern "C" {
             BytesOut[i] = wif[i];
         }
     }
+    
+    void wif_to_privatekey(char* wif, unsigned char* BytesOut) {
+        Int pk;
+        pk = Secp256K1::DecodePrivateKey2(wif);
+        std::string pvk = pk.GetBase10();
+        for(int i = 0; i < pvk.size(); i++) {
+            BytesOut[i] = pvk[i];
+        }
+    }
       
 }
