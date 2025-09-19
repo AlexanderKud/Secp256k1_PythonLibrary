@@ -61,3 +61,24 @@ print(f'incP: {secp256k1.point_to_upub(incP)}') # uncompressed pubkey
 decP = secp256k1.decrement_point(P3)
 print(f'decP: {secp256k1.point_to_upub(decP)}') # uncompressed pubkey
 
+wif0 = "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf"
+wif1 = secp256k1.privatekey_to_uwif(1)
+print(wif1)
+print(wif0 == wif1)
+
+wif02 = "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAvUcVfH"
+wif2 = secp256k1.privatekey_to_uwif(2)
+print(wif2)
+print(wif0 == wif2)
+print(wif02 == wif2)
+
+wif03 = "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74sHUHy8S"
+wif3 = secp256k1.privatekey_to_cwif(3)
+print(wif3)
+print(wif0 == wif3)
+print(wif03 == wif3)
+
+wiff = "L5iGPF2Ktx92hBbmvMsFBUNntd4vENWKFN3dyc5M8edEhenMRnbz"
+wiffc = secp256k1.privatekey_to_cwif(114611115102251689443574372519848189708031905844456858542872688930023724442114)
+print(wiffc)
+print(wiff == wiffc)

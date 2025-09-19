@@ -155,4 +155,22 @@ extern "C" {
         ::secp256k1->GetHash160(type, compressed, P, BytesOut);
     }
     
+    void privatekey_to_uwif(char* priv, unsigned char* BytesOut) {
+        Int pk;
+        pk.SetBase10(priv);
+        std::string wif = ::secp256k1->GetPrivAddress(false, pk);
+        for(int i = 0; i < wif.size(); i++) {
+            BytesOut[i] = wif[i];
+        }
+    }
+    
+    void privatekey_to_cwif(char* priv, unsigned char* BytesOut) {
+        Int pk;
+        pk.SetBase10(priv);
+        std::string wif = ::secp256k1->GetPrivAddress(true, pk);
+        for(int i = 0; i < wif.size(); i++) {
+            BytesOut[i] = wif[i];
+        }
+    }
+      
 }
