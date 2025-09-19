@@ -21,7 +21,7 @@ secp256k1.double_point.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.double_point.restype = None
 
 secp256k1.negate_point.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
-secp256k1.double_point.restype = None
+secp256k1.negate_point.restype = None
 
 secp256k1.add_points.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.add_points.restype = None
