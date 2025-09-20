@@ -123,3 +123,5 @@ print(P_parsed.hex())
 
 P_parsed2 = secp256k1.publickey_to_point('045cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc6aebca40ba255960a3178d6d861a54dba813d0b813fde7b5a5082628087264da')
 print(P_parsed2.hex())
+
+print(secp256k1.p2pkh_address_to_hash160('19HGKmF6Dv6FYJVg7T4KuaBi7gMQoKUtHF'))

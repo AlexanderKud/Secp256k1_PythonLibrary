@@ -27,7 +27,8 @@ public:
     uint8_t *h0, uint8_t *h1, uint8_t *h2, uint8_t *h3);
 
   void GetHash160(int type, bool compressed, Point &pubKey, unsigned char *hash);
-
+  
+  std::string GetHashFromP2PKHAddress(char* address);
   std::string GetAddress(int type, bool compressed, Point &pubKey);
   std::string GetAddress(int type, bool compressed, unsigned char *hash160);
   std::vector<std::string> GetAddress(int type, bool compressed, unsigned char *h1, unsigned char *h2, unsigned char *h3, unsigned char *h4);

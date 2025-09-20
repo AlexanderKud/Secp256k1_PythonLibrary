@@ -216,5 +216,12 @@ extern "C" {
         Point ret = ::secp256k1->ParsePublicKeyHex2(publicKey);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
+    
+    void p2pkh_address_to_hash160(char* address, unsigned char* BytesOut) {
+        std::string hash160 = ::secp256k1->GetHashFromP2PKHAddress(address);
+        for(int i = 0; i < hash160.size(); i++) {
+            BytesOut[i] = hash160[i];
+        }
+    }
       
 }

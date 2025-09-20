@@ -194,7 +194,7 @@ Int Secp256K1::DecodePrivateKey(char *key, bool *compressed) {
   if(key[0] == '5') {
 
     // Not compressed
-    DecodeBase58(key,privKey);
+    DecodeBase58(key, privKey);
     if(privKey.size() != 37) {
       printf("Invalid private key, size != 37 (size=%d)!\n",(int)privKey.size());
       ret.SetInt32(-1);
@@ -295,7 +295,7 @@ Int Secp256K1::DecodePrivateKey2(char *key) {
   } else if(key[0] == 'K' || key[0] == 'L') {
 
     // Compressed
-    DecodeBase58(key,privKey);
+    DecodeBase58(key, privKey);
     if(privKey.size() != 38) {
       printf("Invalid private key, size != 38 (size=%d)!\n",(int)privKey.size());
       ret.SetInt32(-1);
@@ -323,6 +323,13 @@ Int Secp256K1::DecodePrivateKey2(char *key) {
   ret.SetInt32(-1);
   return ret;
 
+}
+
+std::string Secp256K1::GetHashFromP2PKHAddress(char* address) {
+  std::vector<unsigned char> hash160;
+  DecodeBase58(address, hash160);
+  std::string ret(hash160.begin(), hash160.end());
+  return ret;
 }
 
 #define KEYBUFFCOMP(buff,p) \
