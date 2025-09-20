@@ -591,7 +591,7 @@ void Secp256K1::GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* pu
 Point Secp256K1::SetPubKeyBytes(unsigned char* publicKeyBytesIn)
 {
     Point ret;
-    ret.z.SetInt32(1);
+    //ret.z.SetInt32(1);
     ret.x.Set32Bytes(publicKeyBytesIn + 1);
     ret.y.Set32Bytes(publicKeyBytesIn + 33);
     return ret;
@@ -837,7 +837,7 @@ std::string Secp256K1::GetAddress(int type, bool compressed, unsigned char *hash
     }
     break;
   }
-  memcpy(address + 1, hash160,20);
+  memcpy(address + 1, hash160, 20);
   sha256_checksum(address,21,address+21);
 
   // Base58

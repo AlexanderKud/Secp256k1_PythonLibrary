@@ -184,10 +184,12 @@ extern "C" {
     
     void wif_to_privatekey(char* wif, unsigned char* BytesOut) {
         Int pk = Secp256K1::DecodePrivateKey2(wif);
+        pk.Get32Bytes(BytesOut);
+        /*
         std::string pvk = pk.GetBase10();
         for(int i = 0; i < pvk.size(); i++) {
             BytesOut[i] = pvk[i];
-        }
+        }*/
     }
     
     void privatekey_to_address(int type, bool compressed, char* priv, unsigned char* BytesOut) {
