@@ -110,12 +110,12 @@ def point_division(p, pk):
 def point_to_upub(pBytes):
     res = bytes(65)
     secp256k1.point_to_upub(pBytes, res)
-    return bytes(bytearray(res)).hex()
+    return res.hex()
     
 def point_to_cpub(pBytes):
     res = bytes(65)
     secp256k1.point_to_cpub(pBytes, res)
-    return bytes(bytearray(res)).hex()
+    return res.hex()
 
 def double_point(pBytes):
     res = bytes(65)
