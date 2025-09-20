@@ -214,7 +214,7 @@ def wif_to_privatekey(wif):
     pvk = wif.encode()
     res = bytes(32)
     secp256k1.wif_to_privatekey(pvk, res)
-    return int.from_bytes(res)
+    return int.from_bytes(res, 'big')
 
 def privatekey_to_address(addr_type, compressed, pk):
     pvk = str(pk).encode()
