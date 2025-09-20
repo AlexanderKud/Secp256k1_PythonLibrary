@@ -216,5 +216,10 @@ extern "C" {
             BytesOut[i] = address[i];
         }
     }
+    
+    void publickey_to_point(char* publicKey, unsigned char* publicKeyBytesOut) {
+        Point ret = ::secp256k1->ParsePublicKeyHex2(publicKey);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
       
 }

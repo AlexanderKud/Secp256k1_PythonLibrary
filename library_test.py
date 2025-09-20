@@ -116,3 +116,10 @@ print(secp256k1.publickey_to_address(0, False, pnt))
 print(secp256k1.publickey_to_address(0, True, pnt))
 print(secp256k1.publickey_to_address(1, True, pnt))
 print(secp256k1.publickey_to_address(2, True, pnt))
+print()
+
+P_parsed = secp256k1.publickey_to_point('03a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7')
+print(P_parsed.hex())
+
+P_parsed2 = secp256k1.publickey_to_point('045cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc6aebca40ba255960a3178d6d861a54dba813d0b813fde7b5a5082628087264da')
+print(P_parsed2.hex())

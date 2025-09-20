@@ -80,6 +80,9 @@ secp256k1.publickey_to_address.restype = None
 secp256k1.hash160_to_address.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.hash160_to_address.restype = None
 
+secp256k1.publickey_to_point.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.publickey_to_point.restype = None
+
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 def multiplicative_inverse(x):
     return pow(x, N - 2, N)
@@ -231,3 +234,9 @@ def hash160_to_address(addr_type, compressed, hash160):
     res = bytes(42)
     secp256k1.hash160_to_address(addr_type, compressed, bytes.fromhex(hash160), res)
     return res.rstrip(b'\x00').decode()
+
+def publickey_to_point(p):
+    pub = p.encode()
+    res = bytes(65)
+    secp256k1.publickey_to_point(pub, res)
+    return res

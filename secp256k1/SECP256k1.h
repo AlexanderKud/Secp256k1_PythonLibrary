@@ -34,6 +34,7 @@ public:
   std::string GetPrivAddress(bool compressed, Int &privKey);
   std::string GetPublicKeyHex(bool compressed, Point &p);
   Point ParsePublicKeyHex(std::string str, bool &isCompressed);
+  Point ParsePublicKeyHex2(char* pubkey);
   void GetPubKeyBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes);
   Point SetPubKeyBytes(unsigned char* publicKeyBytesIn);
   void GetXBytes(bool compressed, Point& pubKey, unsigned char* publicKeyBytes);
