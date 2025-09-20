@@ -1,2 +1,2 @@
-<b>Based on VanitySearch CodeBase.</b> <br>
+<b>Based on <a href="https://github.com/JeanLucPons/VanitySearch">VanitySearch</a> CodeBase.</b> <br>
 <b>To be continued...</b>
