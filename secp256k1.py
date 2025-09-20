@@ -77,6 +77,9 @@ secp256k1.privatekey_to_address.restype = None
 secp256k1.publickey_to_address.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.publickey_to_address.restype = None
 
+secp256k1.hash160_to_address.argtypes = [ctypes.c_int, ctypes.c_bool, ctypes.c_char_p, ctypes.c_char_p]
+secp256k1.hash160_to_address.restype = None
+
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 def multiplicative_inverse(x):
     return pow(x, N - 2, N)
@@ -180,51 +183,56 @@ def decrement_point(pBytes):
 
 def privatekey_to_hash160(addr_type, compressed, pk):
     pvk = str(pk).encode()
-    res = bytes(b'\x00') * 20
+    res = bytes(20)
     secp256k1.privatekey_to_hash160(addr_type, compressed, pvk, res)
     return res.hex()
     
 def publickey_to_hash160(addr_type, compressed, pBytes):
-    res = bytes(b'\x00') * 20
+    res = bytes(20)
     secp256k1.publickey_to_hash160(addr_type, compressed, pBytes, res)
     return res.hex()
 
 def privatekey_to_uwif(pk):
     pvk = str(pk).encode()
-    res = bytes(b'\x00') * 51
+    res = bytes(51)
     secp256k1.privatekey_to_uwif(pvk, res)
     return res.decode()
 
 def privatekey_to_cwif(pk):
     pvk = str(pk).encode()
-    res = bytes(b'\x00') * 52
+    res = bytes(52)
     secp256k1.privatekey_to_cwif(pvk, res)
     return res.decode()
 
 def privatekey_to_wif(compressed, pk):
     pvk = str(pk).encode()
-    res = bytes(b'\x00') * 53
+    res = bytes(52)
     secp256k1.privatekey_to_wif(compressed, pvk, res)
     res = res.replace(b'\x00', b'')
     return res.decode()
 
 def wif_to_privatekey(wif):
     pvk = wif.encode()
-    res = bytes(b'\x00') * 80
+    res = bytes(78)
     secp256k1.wif_to_privatekey(pvk, res)
     res = res.replace(b'\x00', b'')
-    return res.decode()
+    return int(res.decode())
 
 def privatekey_to_address(addr_type, compressed, pk):
     pvk = str(pk).encode()
-    res = bytes(b'\x00') * 45
+    res = bytes(45)
     secp256k1.privatekey_to_address(addr_type, compressed, pvk, res)
     res = res.replace(b'\x00', b'')
     return res.decode()
     
 def publickey_to_address(addr_type, compressed, p):
-    res = bytes(b'\x00') * 45
+    res = bytes(45)
     secp256k1.publickey_to_address(addr_type, compressed, p, res)
     res = res.replace(b'\x00', b'')
     return res.decode()
-    
+
+def hash160_to_address(addr_type, compressed, hash160):
+    res = bytes(45)
+    secp256k1.hash160_to_address(addr_type, compressed, bytes.fromhex(hash160), res)
+    res = res.replace(b'\x00', b'')
+    return res.decode()

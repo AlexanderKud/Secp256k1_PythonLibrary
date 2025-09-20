@@ -183,8 +183,7 @@ extern "C" {
     }
     
     void wif_to_privatekey(char* wif, unsigned char* BytesOut) {
-        Int pk;
-        pk = Secp256K1::DecodePrivateKey2(wif);
+        Int pk = Secp256K1::DecodePrivateKey2(wif);
         std::string pvk = pk.GetBase10();
         for(int i = 0; i < pvk.size(); i++) {
             BytesOut[i] = pvk[i];
@@ -204,6 +203,13 @@ extern "C" {
     void publickey_to_address(int type, bool compressed, unsigned char* publicKeyBytesIn, unsigned char* BytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         std::string address = ::secp256k1->GetAddress(type, compressed, P);
+        for(int i = 0; i < address.size(); i++) {
+            BytesOut[i] = address[i];
+        }
+    }
+    
+    void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut) {
+        std::string address = ::secp256k1->GetAddress(type, compressed, hash160);
         for(int i = 0; i < address.size(); i++) {
             BytesOut[i] = address[i];
         }
