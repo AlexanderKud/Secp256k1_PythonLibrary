@@ -220,19 +220,19 @@ def wif_to_privatekey(wif):
 
 def privatekey_to_address(addr_type, compressed, pk):
     pvk = str(pk).encode()
-    res = bytes(45)
+    res = bytes(42)
     secp256k1.privatekey_to_address(addr_type, compressed, pvk, res)
     res = res.replace(b'\x00', b'')
     return res.decode()
     
 def publickey_to_address(addr_type, compressed, p):
-    res = bytes(45)
+    res = bytes(42)
     secp256k1.publickey_to_address(addr_type, compressed, p, res)
     res = res.replace(b'\x00', b'')
     return res.decode()
 
 def hash160_to_address(addr_type, compressed, hash160):
-    res = bytes(45)
+    res = bytes(42)
     secp256k1.hash160_to_address(addr_type, compressed, bytes.fromhex(hash160), res)
     res = res.replace(b'\x00', b'')
     return res.decode()
