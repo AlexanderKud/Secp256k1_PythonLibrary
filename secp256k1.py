@@ -91,95 +91,95 @@ def check():
     
 def scalar_multiplication(pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.scalar_multiplication(pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def point_multiplication(p, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.point_multiplication(p, pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def point_division(p, pk):
     pvk = str(multiplicative_inverse(pk)).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.point_multiplication(p, pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def point_to_upub(pBytes):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.point_to_upub(pBytes, res)
     return bytes(bytearray(res)).hex()
     
 def point_to_cpub(pBytes):
-    res = (b'\x00') * 33
+    res = bytes(65)
     secp256k1.point_to_cpub(pBytes, res)
     return bytes(bytearray(res)).hex()
 
 def double_point(pBytes):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.double_point(pBytes, res)
-    return bytes(bytearray(res))
+    return res
 
 def negate_point(pBytes):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.negate_point(pBytes, res)
-    return bytes(bytearray(res))
+    return res
 
 def add_points(p1, p2):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.add_points(p1, p2, res)
-    return bytes(bytearray(res))
+    return res
 
 def add_points_safe(p1, p2):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.add_points_safe(p1, p2, res)
-    return bytes(bytearray(res))
+    return res
 
 def add_point_scalar(p, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.add_point_scalar(p, pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def add_point_scalar_safe(p, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.add_point_scalar_safe(p, pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def subtract_points(p1, p2):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.subtract_points(p1, p2, res)
-    return bytes(bytearray(res))
+    return res
 
 def subtract_points_safe(p1, p2):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.subtract_points_safe(p1, p2, res)
-    return bytes(bytearray(res))
+    return res
 
 def subtract_point_scalar(p, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.subtract_point_scalar(p, pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def subtract_point_scalar_safe(p, pk):
     pvk = str(pk).encode()
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.subtract_point_scalar_safe(p, pvk, res)
-    return bytes(bytearray(res))
+    return res
 
 def increment_point(pBytes):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.increment_point(pBytes, res)
-    return bytes(bytearray(res))
+    return res
 
 def decrement_point(pBytes):
-    res = (b'\x00') * 65
+    res = bytes(65)
     secp256k1.decrement_point(pBytes, res)
-    return bytes(bytearray(res))
+    return res
 
 def privatekey_to_hash160(addr_type, compressed, pk):
     pvk = str(pk).encode()
