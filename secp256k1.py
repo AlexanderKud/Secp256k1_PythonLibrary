@@ -113,7 +113,7 @@ def point_to_upub(pBytes):
     return res.hex()
     
 def point_to_cpub(pBytes):
-    res = bytes(65)
+    res = bytes(33)
     secp256k1.point_to_cpub(pBytes, res)
     return res.hex()
 
