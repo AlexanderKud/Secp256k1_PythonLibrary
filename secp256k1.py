@@ -89,11 +89,23 @@ secp256k1.p2pkh_address_to_hash160.restype = None
 secp256k1.init_bloom.argtypes = [ctypes.c_int, ctypes.c_ulonglong, ctypes.c_double]
 secp256k1.init_bloom.restype = None
 
+secp256k1.init_load_bloom.argtypes = [ctypes.c_int, ctypes.c_ulonglong, ctypes.c_double, ctypes.c_char_p]
+secp256k1.init_load_bloom.restype = None
+
 secp256k1.bloom_info.argtypes = [ctypes.c_int]
 secp256k1.bloom_info.restype = None
 
 secp256k1.bloom_save.argtypes = [ctypes.c_int, ctypes.c_char_p]
 secp256k1.bloom_save.restype = None
+
+secp256k1.bloom_load.argtypes = [ctypes.c_int, ctypes.c_char_p]
+secp256k1.bloom_load.restype = None
+
+secp256k1.bloom_add.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+secp256k1.bloom_add.restype = None
+
+secp256k1.bloom_check.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+secp256k1.bloom_check.restype = ctypes.c_int
 
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 def multiplicative_inverse(x):
@@ -262,10 +274,24 @@ def p2pkh_address_to_hash160(address):
 def init_bloom(index, entries, error):
     secp256k1.init_bloom(index, entries, error)
 
+def init_load_bloom(index, entries, error, filename):
+    secp256k1.init_load_bloom(index, entries, error, filename.encode())
+
 def bloom_info(index):
     secp256k1.bloom_info(index)
 
 def bloom_save(index, filename):
     secp256k1.bloom_save(index, filename.encode())
+    
+def bloom_load(index, filename):
+    secp256k1.bloom_load(index, filename.encode())
+
+def bloom_add(index, item):
+    st = str(item).encode()
+    secp256k1.bloom_add(index, st, len(st))
+
+def bloom_check(index, item):
+    st = str(item).encode()
+    return secp256k1.bloom_check(index, st, len(st))
     
     
