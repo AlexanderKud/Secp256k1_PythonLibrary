@@ -281,13 +281,11 @@ def bloom_load(index, filename):
     secp256k1.bloom_load(index, filename.encode())
 
 def bloom_add(index, item):
-    if type(item) != bytes: st = str(item).encode()
-    else: st = item
-    secp256k1.bloom_add(index, st, len(st))
+    if type(item) != bytes: item = str(item).encode()
+    secp256k1.bloom_add(index, item, len(item))
 
 def bloom_check(index, item):
-    if type(item) != bytes: st = str(item).encode()
-    else: st = item
-    return secp256k1.bloom_check(index, st, len(st))
+    if type(item) != bytes: item = str(item).encode()
+    return secp256k1.bloom_check(index, item, len(item))
     
     
