@@ -9,7 +9,7 @@
 extern "C" {
     
     Secp256K1* secp256k1 = new Secp256K1();
-    Bloom bf;
+    Bloom bf[2];
     
     void Init() {
         ::secp256k1->Init();
@@ -226,16 +226,16 @@ extern "C" {
         }
     }
     
-    void init_bloom(unsigned long long entries, double error) {
-        ::bf.init_bloom(entries, error);
+    void init_bloom(int arrayIndex, unsigned long long entries, double error) {
+        ::bf[arrayIndex].init_bloom(entries, error);
     }
     
-    void bloom_info() {
-        ::bf.print();
+    void bloom_info(int arrayIndex) {
+        ::bf[arrayIndex].print();
     }
     
-    void bloom_save() {
-        ::bf.save("bloom.bf");
+    void bloom_save(int arrayIndex , char* filename) {
+        ::bf[arrayIndex].save(filename);
     }
       
 }

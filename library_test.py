@@ -125,7 +125,11 @@ P_parsed2 = secp256k1.publickey_to_point('045cbdf0646e5db4eaa398f365f2ea7a0e3d41
 print(P_parsed2.hex())
 
 print(secp256k1.p2pkh_address_to_hash160('19HGKmF6Dv6FYJVg7T4KuaBi7gMQoKUtHF'))
-
-secp256k1.init_bloom(1000000, 0.0000000001)
-secp256k1.bloom_info()
-secp256k1.bloom_save()
+print()
+secp256k1.init_bloom(0, 1000000, 0.0000000001)
+secp256k1.bloom_info(0)
+secp256k1.bloom_save(0, "bloom_1.bf")
+print()
+secp256k1.init_bloom(1, 10000000, 0.0000000001)
+secp256k1.bloom_info(1)
+secp256k1.bloom_save(1, "bloom_2.bf")
