@@ -137,8 +137,8 @@ else:
     print(f'{val} is not in the bloom')
 secp256k1.bloom_save(0, "bloom_1.bf")
 print()
-
-secp256k1.init_load_bloom(1, 1000000, 0.0000000001, "bloom_1.bf")
+   
+secp256k1.bloom_load(1, "bloom_1.bf")
 secp256k1.bloom_info(1)
 if (secp256k1.bloom_check(1, val)):
     print(f'{val} is in the bloom')

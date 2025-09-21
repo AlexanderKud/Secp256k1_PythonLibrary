@@ -229,12 +229,7 @@ extern "C" {
     void init_bloom(int arrayIndex, unsigned long long entries, double error) {
         ::bf[arrayIndex].init_bloom(entries, error);
     }
-    
-    void init_load_bloom(int arrayIndex, unsigned long long entries, double error, char* filename) {
-        ::bf[arrayIndex].init_bloom(entries, error);
-        ::bf[arrayIndex].load(filename);
-    }
-    
+
     void bloom_info(int arrayIndex) {
         ::bf[arrayIndex].print();
     }

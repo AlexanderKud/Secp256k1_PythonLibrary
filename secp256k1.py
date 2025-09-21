@@ -89,9 +89,6 @@ secp256k1.p2pkh_address_to_hash160.restype = None
 secp256k1.init_bloom.argtypes = [ctypes.c_int, ctypes.c_ulonglong, ctypes.c_double]
 secp256k1.init_bloom.restype = None
 
-secp256k1.init_load_bloom.argtypes = [ctypes.c_int, ctypes.c_ulonglong, ctypes.c_double, ctypes.c_char_p]
-secp256k1.init_load_bloom.restype = None
-
 secp256k1.bloom_info.argtypes = [ctypes.c_int]
 secp256k1.bloom_info.restype = None
 
@@ -273,9 +270,6 @@ def p2pkh_address_to_hash160(address):
     
 def init_bloom(index, entries, error):
     secp256k1.init_bloom(index, entries, error)
-
-def init_load_bloom(index, entries, error, filename):
-    secp256k1.init_load_bloom(index, entries, error, filename.encode())
 
 def bloom_info(index):
     secp256k1.bloom_info(index)
