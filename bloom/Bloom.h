@@ -5,7 +5,7 @@
 class Bloom
 {
 public:
-    Bloom(unsigned long long int entries, double error);
+    //Bloom(unsigned long long int entries, double error);
     ~Bloom();
     int check(const void *buffer, int len);
     int add(const void *buffer, int len);
@@ -13,6 +13,7 @@ public:
     int reset();
     int save(const char *filename);
     int load(const char *filename);
+    void init_bloom(unsigned long long int entries, double error);
 
     unsigned char get_hashes();
     unsigned long long int get_bits();

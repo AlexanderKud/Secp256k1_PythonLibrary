@@ -2,7 +2,10 @@
 #include <iostream>
 #include <math.h>
 #include <string.h>
-//#include <unistd.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <cstdint>
 
 #define MAKESTRING(n) STRING(n)
 #define STRING(n) #n
@@ -10,8 +13,9 @@
 #define BLOOM_VERSION_MAJOR 2
 #define BLOOM_VERSION_MINOR 1
 
-Bloom::Bloom(unsigned long long entries, double error) : _ready(0)
+void Bloom::init_bloom(unsigned long long entries, double error)
 {
+    _ready = 0;
     if (entries < 1000 || error <= 0 || error >= 1) {
         printf("Bloom init error\n");
         return;
@@ -94,7 +98,7 @@ int Bloom::reset()
     return 0;
 }
 
-
+/*
 int Bloom::save(const char *filename)
 {
 //    if (filename == NULL || filename[0] == 0) {
@@ -217,7 +221,125 @@ int Bloom::load(const char *filename)
 //    return rv;
     return 0;
 }
+*/
+int Bloom::save(const char *filename)
+{
+    if (!_ready || filename == nullptr || filename[0] == '\0') {
+        return 1;
+    }
 
+    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0) {
+        return 1;
+    }
+
+    // Write header
+    struct {
+        char magic[10];
+        uint16_t header_size;
+        uint16_t version_major;
+        uint16_t version_minor;
+        uint64_t entries;
+        double error;
+        uint64_t bits;
+        uint64_t bytes;
+        uint8_t hashes;
+    } header;
+
+    memcpy(header.magic, BLOOM_MAGIC, 10);
+    header.header_size = sizeof(header);
+    header.version_major = _major;
+    header.version_minor = _minor;
+    header.entries = _entries;
+    header.error = _error;
+    header.bits = _bits;
+    header.bytes = _bytes;
+    header.hashes = _hashes;
+
+    if (write(fd, &header, sizeof(header)) != sizeof(header)) {
+        close(fd);
+        return 1;
+    }
+
+    // Write bit array
+    if (write(fd, _bf, _bytes) != static_cast<ssize_t>(_bytes)) {
+        close(fd);
+        return 1;
+    }
+
+    close(fd);
+    return 0;
+}
+
+int Bloom::load(const char *filename)
+{
+    if (filename == nullptr || filename[0] == '\0') {
+        return 1;
+    }
+
+    int fd = open(filename, O_RDONLY);
+    if (fd < 0) {
+        return 1;
+    }
+
+    // Read and verify header
+    struct {
+        char magic[10];
+        uint16_t header_size;
+        uint16_t version_major;
+        uint16_t version_minor;
+        uint64_t entries;
+        double error;
+        uint64_t bits;
+        uint64_t bytes;
+        uint8_t hashes;
+    } header;
+
+    if (read(fd, &header, sizeof(header)) != sizeof(header)) {
+        close(fd);
+        return 1;
+    }
+
+    if (memcmp(header.magic, BLOOM_MAGIC, 10) != 0 ||
+        header.version_major != BLOOM_VERSION_MAJOR) {
+        close(fd);
+    return 1;
+        }
+
+        // Free existing filter if it exists
+        if (_ready) {
+            free(_bf);
+            _ready = 0;
+        }
+
+        // Initialize with loaded parameters
+        _entries = header.entries;
+        _error = header.error;
+        _bits = header.bits;
+        _bytes = header.bytes;
+        _hashes = header.hashes;
+        _major = header.version_major;
+        _minor = header.version_minor;
+
+        // Allocate bit array
+        _bf = (unsigned char *)malloc(_bytes);
+        if (_bf == nullptr) {
+            close(fd);
+            return 1;
+        }
+
+        // Read bit array
+        if (read(fd, _bf, _bytes) != static_cast<ssize_t>(_bytes)) {
+            free(_bf);
+            _bf = nullptr;
+            close(fd);
+            return 1;
+        }
+
+        _ready = 1;
+        close(fd);
+        return 0;
+}
 
 unsigned char Bloom::get_hashes()
 {
@@ -254,10 +376,11 @@ int Bloom::test_bit_set_bit(unsigned char *buf, unsigned int bit, int set_bit)
 
 int Bloom::bloom_check_add(const void *buffer, int len, int add)
 {
+    /*
     if (_ready == 0) {
         printf("bloom not initialized!\n");
         return -1;
-    }
+    }*/
 
     unsigned char hits = 0;
     unsigned int a = murmurhash2(buffer, len, 0x9747b28c);

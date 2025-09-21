@@ -4,10 +4,12 @@
 #include "secp256k1/SECP256k1.h"
 #include "secp256k1/Int.h"
 #include "secp256k1/IntGroup.h"
+#include "bloom/Bloom.h"
 
 extern "C" {
     
     Secp256K1* secp256k1 = new Secp256K1();
+    Bloom bf;
     
     void Init() {
         ::secp256k1->Init();
@@ -222,6 +224,18 @@ extern "C" {
         for(int i = 0; i < hash160.size(); i++) {
             BytesOut[i] = hash160[i];
         }
+    }
+    
+    void init_bloom(unsigned long long entries, double error) {
+        ::bf.init_bloom(entries, error);
+    }
+    
+    void bloom_info() {
+        ::bf.print();
+    }
+    
+    void bloom_save() {
+        ::bf.save("bloom.bf");
     }
       
 }

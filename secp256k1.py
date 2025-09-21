@@ -86,6 +86,15 @@ secp256k1.publickey_to_point.restype = None
 secp256k1.p2pkh_address_to_hash160.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.p2pkh_address_to_hash160.restype = None
 
+secp256k1.init_bloom.argtypes = [ctypes.c_ulonglong, ctypes.c_double]
+secp256k1.init_bloom.restype = None
+
+secp256k1.bloom_info.argtypes = None
+secp256k1.bloom_info.restype = None
+
+secp256k1.bloom_save.argtypes = None
+secp256k1.bloom_save.restype = None
+
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 def multiplicative_inverse(x):
     return pow(x, N - 2, N)
@@ -249,4 +258,14 @@ def p2pkh_address_to_hash160(address):
     res = bytes(25)
     secp256k1.p2pkh_address_to_hash160(addr, res)
     return res.hex()[2:42]
+    
+def init_bloom(entries, error):
+    secp256k1.init_bloom(entries, error)
+
+def bloom_info():
+    secp256k1.bloom_info()
+
+def bloom_save():
+    secp256k1.bloom_save()
+    
     
