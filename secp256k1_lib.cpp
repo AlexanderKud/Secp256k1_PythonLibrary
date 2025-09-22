@@ -145,6 +145,11 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
+    bool point_on_curve(unsigned char* publicKeyBytesIn) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        return ::secp256k1->EC(P);
+    }
+    
     void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut) {
         Int pk;
         pk.SetBase10(priv);

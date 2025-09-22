@@ -145,3 +145,9 @@ if (secp256k1.bloom_check(1, val)):
 else:
     print(f'{val} is not in the bloom')
 
+Gp = secp256k1.scalar_multiplication(1)
+print(f'Point_on_curve: {secp256k1.point_on_curve(Gp)}')
+testP1 = secp256k1.add_points(Gp, Gp)
+print(f'Point_on_curve: {secp256k1.point_on_curve(testP1)}')
+testP2 = secp256k1.add_points_safe(Gp, Gp)
+print(f'Point_on_curve: {secp256k1.point_on_curve(testP2)}')
