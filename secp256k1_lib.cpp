@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 
 #include "secp256k1/SECP256k1.h"
 #include "secp256k1/Int.h"
