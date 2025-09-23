@@ -1044,7 +1044,7 @@ Point Secp256K1::AddPoints2(Point &p1, Point &p2) {
   r.z.SetInt32(1);
   Int _ZERO((uint64_t)0);
 
-  if (p1.equals(p2)) {
+  if (p1.equals2(p2)) {
     r = DoubleDirect(p1);
     return r;
   }
@@ -1341,9 +1341,9 @@ bool Secp256K1::EC(Point &p) {
   Int _p;
 
   _s.ModSquareK1(&p.x);
-  _p.ModMulK1(&_s,&p.x);
+  _p.ModMulK1(&_s, &p.x);
   _p.ModAdd(7);
-  _s.ModMulK1(&p.y,&p.y);
+  _s.ModMulK1(&p.y, &p.y);
   _s.ModSub(&_p);
 
   return _s.IsZero(); // ( ((pow2(y) - (pow3(x) + 7)) % P) == 0 );
