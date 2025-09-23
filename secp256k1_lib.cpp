@@ -25,8 +25,17 @@ extern "C" {
     void scalar_multiplication(char* priv, unsigned char* publicKeyBytesOut) {
         Int pk;
         pk.SetBase10(priv);
-        Point P = ::secp256k1->ComputePublicKey(&pk);
-        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
+        if (pk.IsZero()) {
+            Point P;
+            P.x.SetInt32(0);
+            P.y.SetInt32(0);
+            P.z.SetInt32(1);
+            ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
+        }
+        else {
+            Point P = ::secp256k1->ComputePublicKey(&pk);
+            ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
+        }        
     }
     
     void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
