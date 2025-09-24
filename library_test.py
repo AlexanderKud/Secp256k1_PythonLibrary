@@ -160,3 +160,8 @@ print(secp256k1.point_to_cpub(P01))
 N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 P02 = secp256k1.scalar_multiplication(115792089237316195423570985008687907852837564279074904382605163141518161494339 + N * 2)
 print(secp256k1.point_to_cpub(P02))
+print(secp256k1.hash160_to_address(0, False, '7f4c4db9be542f0231327db9fe3d47987c7dc69b'))
+
+P_test = secp256k1.scalar_multiplication(99)
+print(secp256k1.point_to_cpub(P_test))
+print(secp256k1.point_to_upub(P_test))

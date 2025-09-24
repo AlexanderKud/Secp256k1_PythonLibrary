@@ -45,16 +45,6 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
-    void point_to_upub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
-        ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
-    }
-    
-    void point_to_cpub(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
-        ::secp256k1->GetPubKeyBytes(true, P, publicKeyBytesOut);
-    }
-    
     void double_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         P = ::secp256k1->DoubleDirect(P);
