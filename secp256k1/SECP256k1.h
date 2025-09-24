@@ -44,6 +44,7 @@ public:
 
   static Int DecodePrivateKey(char *key, bool *compressed);
   static Int DecodePrivateKey2(char *key);
+  static Int GetYToX(Int x, bool isEven);
   
   Point PointMultiplication(Point &P, Int *scalar);
   Point Add(Point &p1, Point &p2);

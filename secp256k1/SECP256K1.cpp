@@ -1314,7 +1314,28 @@ Point Secp256K1::Double(Point &p) {
   return r;
 }
 
-Int Secp256K1::GetY(Int x,bool isEven) {
+Int Secp256K1::GetY(Int x, bool isEven) {
+
+  Int _s;
+  Int _p;
+
+  _s.ModSquareK1(&x);
+  _p.ModMulK1(&_s,&x);
+  _p.ModAdd(7);
+  _p.ModSqrt();
+
+  if(!_p.IsEven() && isEven) {
+    _p.ModNeg();
+  }
+  else if(_p.IsEven() && !isEven) {
+    _p.ModNeg();
+  }
+
+  return _p;
+
+}
+
+Int Secp256K1::GetYToX(Int x, bool isEven) {
 
   Int _s;
   Int _p;

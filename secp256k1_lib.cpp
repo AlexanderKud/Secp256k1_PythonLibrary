@@ -138,6 +138,12 @@ extern "C" {
         return ::secp256k1->EC(P);
     }
     
+    void get_y(unsigned char* BytesIn, bool isEven, unsigned char* BytesOut) {
+        Int x1; x1.Set32Bytes(BytesIn);
+        Int x2 = ::secp256k1->GetYToX(x1, isEven);
+        x2.Get32Bytes(BytesOut);
+    }
+    
     void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut) {
         Int pk;
         pk.SetBase10(priv);

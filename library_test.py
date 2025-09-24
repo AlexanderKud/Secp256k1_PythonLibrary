@@ -118,7 +118,7 @@ print(secp256k1.publickey_to_address(1, True, pnt))
 print(secp256k1.publickey_to_address(2, True, pnt))
 print()
 
-P_parsed = secp256k1.publickey_to_point('03a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7')
+P_parsed = secp256k1.publickey_to_point('031cf3c12331b71866c1c5318f5ca47eedcb875a823218b5a39b070506ed55d204')
 print(P_parsed.hex())
 
 P_parsed2 = secp256k1.publickey_to_point('045cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc6aebca40ba255960a3178d6d861a54dba813d0b813fde7b5a5082628087264da')
@@ -162,6 +162,6 @@ P02 = secp256k1.scalar_multiplication(115792089237316195423570985008687907852837
 print(secp256k1.point_to_cpub(P02))
 print(secp256k1.hash160_to_address(0, False, '7f4c4db9be542f0231327db9fe3d47987c7dc69b'))
 
-P_test = secp256k1.scalar_multiplication(99)
+P_test = secp256k1.scalar_multiplication(57896044618658097711785492504343953926418782139537452191302581570759080747169)
 print(secp256k1.point_to_cpub(P_test))
 print(secp256k1.point_to_upub(P_test))
