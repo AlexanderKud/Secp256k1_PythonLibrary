@@ -68,27 +68,11 @@ extern "C" {
     void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1);
         Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
-        Point ret = ::secp256k1->AddPoints(P, Q);
-        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
-    }
-    
-    void add_points_safe(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1);
-        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
         Point ret = ::secp256k1->AddPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void add_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
-        Int pk;
-        pk.SetBase10(priv);
-        Point Q = ::secp256k1->ComputePublicKey(&pk);
-        Point ret = ::secp256k1->AddPoints(P, Q);
-        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
-    }
-    
-    void add_point_scalar_safe(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
         pk.SetBase10(priv);
@@ -100,27 +84,11 @@ extern "C" {
     void subtract_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1);
         Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
-        Point ret = ::secp256k1->SubtractPoints(P, Q);
-        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
-    }
-    
-    void subtract_points_safe(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn1);
-        Point Q = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn2);
         Point ret = ::secp256k1->SubtractPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
     void subtract_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
-        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
-        Int pk;
-        pk.SetBase10(priv);
-        Point Q = ::secp256k1->ComputePublicKey(&pk);
-        Point ret = ::secp256k1->SubtractPoints(P, Q);
-        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
-    }
-    
-    void subtract_point_scalar_safe(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
         pk.SetBase10(priv);
@@ -177,15 +145,6 @@ extern "C" {
         Int pk;
         pk.SetBase10(priv);
         std::string wif = ::secp256k1->GetPrivAddress(true, pk);
-        for(int i = 0; i < wif.size(); i++) {
-            BytesOut[i] = wif[i];
-        }
-    }
-    
-    void privatekey_to_wif(bool compressed, char* priv, unsigned char* BytesOut) {
-        Int pk;
-        pk.SetBase10(priv);
-        std::string wif = ::secp256k1->GetPrivAddress(compressed, pk);
         for(int i = 0; i < wif.size(); i++) {
             BytesOut[i] = wif[i];
         }

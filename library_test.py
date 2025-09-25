@@ -37,22 +37,22 @@ Pm = secp256k1.point_multiplication(P3, 8)
 print(f'Pm: {secp256k1.point_to_upub(Pm)}') # uncompressed pubkey
 Pd = secp256k1.point_division(Pm, 2)
 print(f'Pm: {secp256k1.point_to_upub(Pd)}') # uncompressed pubkey
-infinityP = secp256k1.add_points_safe(P5, P5_neg)
+infinityP = secp256k1.add_points(P5, P5_neg)
 print(f'infinityP: {secp256k1.point_to_upub(infinityP)}') # uncompressed pubkey
 
-addP1 = secp256k1.add_points_safe(infinityP, P1)
+addP1 = secp256k1.add_points(infinityP, P1)
 print(f'addP1: {secp256k1.point_to_upub(addP1)}') # uncompressed pubkey
 
-subP1 = secp256k1.subtract_points_safe(infinityP, P1)
+subP1 = secp256k1.subtract_points(infinityP, P1)
 print(f'subP1: {secp256k1.point_to_upub(subP1)}') # uncompressed pubkey
 
-subP2 = secp256k1.subtract_points_safe(P1, P1)
+subP2 = secp256k1.subtract_points(P1, P1)
 print(f'subP2: {secp256k1.point_to_upub(subP2)}') # uncompressed pubkey
 
-addPs = secp256k1.add_point_scalar_safe(P1, 1024)
+addPs = secp256k1.add_point_scalar(P1, 1024)
 print(f'addPs: {secp256k1.point_to_upub(addPs)}') # uncompressed pubkey
 
-subPs = secp256k1.subtract_point_scalar_safe(addPs, 9)
+subPs = secp256k1.subtract_point_scalar(addPs, 9)
 print(f'subPs: {secp256k1.point_to_upub(subPs)}') # uncompressed pubkey
 
 incP = secp256k1.increment_point(P1)
@@ -82,15 +82,6 @@ wiff = "L5iGPF2Ktx92hBbmvMsFBUNntd4vENWKFN3dyc5M8edEhenMRnbz"
 wiffc = secp256k1.privatekey_to_cwif(114611115102251689443574372519848189708031905844456858542872688930023724442114)
 print(wiffc)
 print(wiff == wiffc)
-
-wifu = secp256k1.privatekey_to_wif(False, 4)
-wifc = secp256k1.privatekey_to_wif(True, 4)
-print(len(wifu))
-print(len(wifc))
-print(wifu)
-print(wifu == "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreB4AD8Yi")
-print(wifc)
-print(wifc == "KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU75NBY2dKG")
 
 pk1 = secp256k1.wif_to_privatekey("5K2jRkYtEju8Ds2Y3HwwNBut1a6vADjy6B4Eu5N8NZbkiaZ5DTZ")
 print(pk1)
@@ -149,16 +140,13 @@ Gp = secp256k1.scalar_multiplication(1)
 print(f'Point_on_curve: {secp256k1.point_on_curve(Gp)}')
 testP1 = secp256k1.add_points(Gp, Gp)
 print(f'Point_on_curve: {secp256k1.point_on_curve(testP1)}')
-testP2 = secp256k1.add_points_safe(Gp, Gp)
-print(f'Point_on_curve: {secp256k1.point_on_curve(testP2)}')
 print()
 P0 = secp256k1.scalar_multiplication(0)
 print(P0 == infinityP)
 print(secp256k1.point_to_cpub(P0))
 P01 = secp256k1.scalar_multiplication(1)
 print(secp256k1.point_to_cpub(P01))
-N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
-P02 = secp256k1.scalar_multiplication(115792089237316195423570985008687907852837564279074904382605163141518161494339 + N * 2)
+P02 = secp256k1.scalar_multiplication(115792089237316195423570985008687907852837564279074904382605163141518161494339 + secp256k1.N * 2)
 print(secp256k1.point_to_cpub(P02))
 print(secp256k1.hash160_to_address(0, False, '7f4c4db9be542f0231327db9fe3d47987c7dc69b'))
 
