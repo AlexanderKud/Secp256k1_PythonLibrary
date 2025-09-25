@@ -4,7 +4,6 @@
 #include "../base58/Base58.h"
 #include "../bech32/Bech32.h"
 #include <string.h>
-#include <gmp.h>
 
 Secp256K1::Secp256K1() {
 }
@@ -745,20 +744,6 @@ Point Secp256K1::PointMultiplication(Point &P, Int *scalar) {
   }
   R.Reduce();
   return R;
-}
-
-Point Secp256K1::PointDivision(Point &P, Int *scalar) {
-  Point A;
-  Int mod_inv;
-  mpz_t N, d, s;
-  mpz_inits(N, d, s, NULL);
-  mpz_set_str(N, order.GetBase10().c_str(), 0);
-  mpz_set_str(s, scalar->GetBase10().c_str(), 0);
-  mpz_invert(d, s, N);
-  mod_inv.SetBase10(mpz_get_str(NULL, 10, d));
-  mpz_clears(N, d, s, NULL);
-  A = PointMultiplication(P, &mod_inv);
-  return A;
 }
 
 Point Secp256K1::AddDirect(Point &p1, Point &p2) {

@@ -41,7 +41,6 @@ public:
   static Int GetYToX(Int x, bool isEven);
   
   Point PointMultiplication(Point &P, Int *scalar);
-  Point PointDivision(Point &P, Int *scalar);
   Point Add(Point &p1, Point &p2);
   Point Add2(Point &p1, Point &p2);
   Point AddDirect(Point &p1, Point &p2);
