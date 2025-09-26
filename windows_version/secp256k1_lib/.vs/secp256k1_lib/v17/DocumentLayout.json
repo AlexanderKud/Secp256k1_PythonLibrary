@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9EA67A77-3F50-4FCE-85B9-FAB635FEFB0A}|secp256k1.vcxproj|C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\secp256k1_lib.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{9EA67A77-3F50-4FCE-85B9-FAB635FEFB0A}|secp256k1.vcxproj|solutionrelative:secp256k1_lib.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EA67A77-3F50-4FCE-85B9-FAB635FEFB0A}|secp256k1.vcxproj|C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\secp256k1_lib.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{9EA67A77-3F50-4FCE-85B9-FAB635FEFB0A}|secp256k1.vcxproj|solutionrelative:secp256k1_lib.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "secp256k1_lib.cpp",
+              "DocumentMoniker": "C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\secp256k1_lib.cpp",
+              "RelativeDocumentMoniker": "secp256k1_lib.cpp",
+              "ToolTip": "C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\secp256k1_lib.cpp",
+              "RelativeToolTip": "secp256k1_lib.cpp",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAACoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-26T06:27:05.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "secp256k1_lib.h",
+              "DocumentMoniker": "C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\secp256k1_lib.h",
+              "RelativeDocumentMoniker": "secp256k1_lib.h",
+              "ToolTip": "C:\\Users\\kudry\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\secp256k1_lib\\secp256k1_lib.h",
+              "RelativeToolTip": "secp256k1_lib.h",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABoAAABnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-26T06:26:40.277Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

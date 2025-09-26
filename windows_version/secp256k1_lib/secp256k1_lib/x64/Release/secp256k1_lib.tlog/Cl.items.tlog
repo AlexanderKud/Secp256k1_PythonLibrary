@@ -1,0 +1,13 @@
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Base58.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Base58.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Bech32.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Bech32.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\hash\ripemd160.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\ripemd160.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\hash\sha256.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\sha256.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\hash\sha512.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\sha512.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Int.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Int.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\IntGroup.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\IntGroup.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\IntMod.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\IntMod.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Point.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Point.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Random.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Random.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\SECP256K1.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\SECP256K1.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\secp256k1_lib.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Timer.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Timer.obj
