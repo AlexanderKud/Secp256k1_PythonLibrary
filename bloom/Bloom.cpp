@@ -1,17 +1,42 @@
-#include "Bloom.h"
+#include <stdio.h>
 #include <iostream>
 #include <math.h>
 #include <string.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <cstdint>
 
-#define MAKESTRING(n) STRING(n)
-#define STRING(n) #n
-#define BLOOM_MAGIC "libbloom2"
-#define BLOOM_VERSION_MAJOR 2
-#define BLOOM_VERSION_MINOR 1
+#include "Bloom.h"
+
+Bloom::Bloom()
+{
+    _ready = 0;
+    _entries = 1000000;
+    _error = 0.00001;
+
+    long double num = -log(_error);
+    long double denom = 0.480453013918201; // ln(2)^2
+    _bpe = (num / denom);
+
+    long double dentries = (long double)_entries;
+    long double allbits = dentries * _bpe;
+    _bits = (unsigned long long int)allbits;
+
+    if (_bits % 8) {
+        _bytes = (unsigned long long int)(_bits / 8) + 1;
+    } else {
+        _bytes = (unsigned long long int) _bits / 8;
+    }
+
+    _hashes = (int)ceil(0.693147180559945 * _bpe);  // ln(2)
+    
+    _bf = (unsigned char *)calloc(_bytes, sizeof(unsigned char));
+    if (_bf == NULL) {
+        printf("Bloom init error\n");
+        return;
+    }
+    
+    _ready = 1;
+
+}
 
 void Bloom::init_bloom(unsigned long long entries, double error)
 {
@@ -38,24 +63,21 @@ void Bloom::init_bloom(unsigned long long entries, double error)
         _bytes = (unsigned long long int) _bits / 8;
     }
 
-    _hashes = (unsigned char)ceil(0.693147180559945 * _bpe);  // ln(2)
+    _hashes = (int)ceil(0.693147180559945 * _bpe);  // ln(2)
 
-    _bf = (unsigned char *)calloc((unsigned long long int)_bytes, sizeof(unsigned char));
-    if (_bf == NULL) {                                   // LCOV_EXCL_START
+    _bf = (unsigned char *)calloc(_bytes, sizeof(unsigned char));
+    if (_bf == NULL) {
         printf("Bloom init error\n");
         return;
-    }                                                          // LCOV_EXCL_STOP
+    }
 
     _ready = 1;
 
-    _major = BLOOM_VERSION_MAJOR;
-    _minor = BLOOM_VERSION_MINOR;
-
 }
+
 Bloom::~Bloom()
 {
-    if (_ready)
-        free(_bf);
+    if (_ready) free(_bf);
 }
 
 int Bloom::check(const void *buffer, int len)
@@ -69,14 +91,12 @@ int Bloom::add(const void *buffer, int len)
     return bloom_check_add(buffer, len, 1);
 }
 
-
 void Bloom::print()
 {
     printf("Bloom at %p\n", (void *)this);
     if (!_ready) {
         printf(" *** NOT READY ***\n");
     }
-    printf("  Version    : %d.%d\n", _major, _minor);
     printf("  Entries    : %llu\n", _entries);
     printf("  Error      : %1.10f\n", _error);
     printf("  Bits       : %llu\n", _bits);
@@ -92,182 +112,57 @@ void Bloom::print()
 
 int Bloom::reset()
 {
-    if (!_ready)
-        return 1;
+    if (!_ready) return 1;
     memset(_bf, 0, _bytes);
     return 0;
 }
 
-/*
-int Bloom::save(const char *filename)
-{
-//    if (filename == NULL || filename[0] == 0) {
-//        return 1;
-//    }
-
-//    int fd = open(filename, O_WRONLY | O_CREAT, 0644);
-//    if (fd < 0) {
-//        return 1;
-//    }
-
-//    ssize_t out = write(fd, BLOOM_MAGIC, strlen(BLOOM_MAGIC));
-//    if (out != strlen(BLOOM_MAGIC)) {
-//        goto save_error;        // LCOV_EXCL_LINE
-//    }
-
-//    uint16_t size = sizeof(struct bloom);
-//    out = write(fd, &size, sizeof(uint16_t));
-//    if (out != sizeof(uint16_t)) {
-//        goto save_error;        // LCOV_EXCL_LINE
-//    }
-
-//    out = write(fd, bloom, sizeof(struct bloom));
-//    if (out != sizeof(struct bloom)) {
-//        goto save_error;        // LCOV_EXCL_LINE
-//    }
-
-//    out = write(fd, _bf, _bytes);
-//    if (out != _bytes) {
-//        goto save_error;        // LCOV_EXCL_LINE
-//    }
-
-//    close(fd);
-//    return 0;
-//    // LCOV_EXCL_START
-//save_error:
-//    close(fd);
-//    return 1;
-//    // LCOV_EXCL_STOP
-    return 0;
-}
-
-
-int Bloom::load(const char *filename)
-{
-//    int rv = 0;
-
-//    if (filename == NULL || filename[0] == 0) {
-//        return 1;
-//    }
-//    if (bloom == NULL) {
-//        return 2;
-//    }
-
-//    memset(bloom, 0, sizeof(struct bloom));
-
-//    int fd = open(filename, O_RDONLY);
-//    if (fd < 0) {
-//        return 3;
-//    }
-
-//    char line[30];
-//    memset(line, 0, 30);
-//    ssize_t in = read(fd, line, strlen(BLOOM_MAGIC));
-
-//    if (in != strlen(BLOOM_MAGIC)) {
-//        rv = 4;
-//        goto load_error;
-//    }
-
-//    if (strncmp(line, BLOOM_MAGIC, strlen(BLOOM_MAGIC))) {
-//        rv = 5;
-//        goto load_error;
-//    }
-
-//    uint16_t size;
-//    in = read(fd, &size, sizeof(uint16_t));
-//    if (in != sizeof(uint16_t)) {
-//        rv = 6;
-//        goto load_error;
-//    }
-
-//    if (size != sizeof(struct bloom)) {
-//        rv = 7;
-//        goto load_error;
-//    }
-
-//    in = read(fd, bloom, sizeof(struct bloom));
-//    if (in != sizeof(struct bloom)) {
-//        rv = 8;
-//        goto load_error;
-//    }
-
-//    _bf = NULL;
-//    if (_major != BLOOM_VERSION_MAJOR) {
-//        rv = 9;
-//        goto load_error;
-//    }
-
-//    _bf = (unsigned char *)malloc(_bytes);
-//    if (_bf == NULL) {
-//        rv = 10;        // LCOV_EXCL_LINE
-//        goto load_error;
-//    }
-
-//    in = read(fd, _bf, _bytes);
-//    if (in != _bytes) {
-//        rv = 11;
-//        free(_bf);
-//        _bf = NULL;
-//        goto load_error;
-//    }
-
-//    close(fd);
-//    return rv;
-
-//load_error:
-//    close(fd);
-//    _ready = 0;
-//    return rv;
-    return 0;
-}
-*/
 int Bloom::save(const char *filename)
 {
     if (!_ready || filename == nullptr || filename[0] == '\0') {
         return 1;
     }
-
-    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (fd < 0) {
+    
+    FILE *filePtr = fopen(filename, "wb");
+    if (filePtr == NULL) {
         return 1;
     }
-
-    // Write header
+    // header struct
     struct {
-        char magic[10];
-        uint16_t header_size;
-        uint16_t version_major;
-        uint16_t version_minor;
-        uint64_t entries;
+        unsigned short int header_size;
+        unsigned long long int entries;
         double error;
-        uint64_t bits;
-        uint64_t bytes;
-        uint8_t hashes;
+        double bpe;
+        unsigned long long int bits;
+        unsigned long long int bytes;
+        int hashes;
     } header;
 
-    memcpy(header.magic, BLOOM_MAGIC, 10);
     header.header_size = sizeof(header);
-    header.version_major = _major;
-    header.version_minor = _minor;
     header.entries = _entries;
     header.error = _error;
+    header.bpe = _bpe;
     header.bits = _bits;
     header.bytes = _bytes;
     header.hashes = _hashes;
-
-    if (write(fd, &header, sizeof(header)) != sizeof(header)) {
-        close(fd);
+    
+    // write header struct
+    size_t written = fwrite(&header, sizeof(header), 1, filePtr);
+    if (written != size_t(1)) {
+        printf("Error writing header\n");
+        fclose(filePtr);
         return 1;
     }
 
-    // Write bit array
-    if (write(fd, _bf, _bytes) != static_cast<ssize_t>(_bytes)) {
-        close(fd);
+    // write byte array
+    size_t res = fwrite(_bf, sizeof(unsigned char), _bytes, filePtr);
+    if(res != _bytes) {
+        printf("Error writing bytes\n");
+        fclose(filePtr);
         return 1;
     }
 
-    close(fd);
+    fclose(filePtr);
     return 0;
 }
 
@@ -277,82 +172,80 @@ int Bloom::load(const char *filename)
         return 1;
     }
 
-    int fd = open(filename, O_RDONLY);
-    if (fd < 0) {
+    FILE *filePtr = fopen(filename, "rb");
+    if (filePtr == NULL) {
         return 1;
     }
 
     // Read and verify header
     struct {
-        char magic[10];
-        uint16_t header_size;
-        uint16_t version_major;
-        uint16_t version_minor;
-        uint64_t entries;
+        unsigned short int header_size;
+        unsigned long long int entries;
         double error;
-        uint64_t bits;
-        uint64_t bytes;
-        uint8_t hashes;
+        double bpe;
+        unsigned long long int bits;
+        unsigned long long int bytes;
+        int hashes;
     } header;
 
-    if (read(fd, &header, sizeof(header)) != sizeof(header)) {
-        close(fd);
+    size_t hres = fread(&header, sizeof(header), 1, filePtr);
+    if (hres != size_t(1)) {
+        printf("Error reading header from file\n");
+        fclose(filePtr);
         return 1;
     }
 
-    if (memcmp(header.magic, BLOOM_MAGIC, 10) != 0 ||
-        header.version_major != BLOOM_VERSION_MAJOR) {
-        close(fd);
-    return 1;
-        }
+    // free existing filter if it exists
+    if (_ready) {
+        free(_bf);
+        _ready = 0;
+     }
 
-        // Free existing filter if it exists
-        if (_ready) {
-            free(_bf);
-            _ready = 0;
-        }
+    // initialize with loaded parameters
+    _entries = header.entries;
+    _error = header.error;
+    _bpe = header.bpe;
+    _bits = header.bits;
+    _bytes = header.bytes;
+    _hashes = header.hashes;
 
-        // Initialize with loaded parameters
-        _entries = header.entries;
-        _error = header.error;
-        _bits = header.bits;
-        _bytes = header.bytes;
-        _hashes = header.hashes;
-        _major = header.version_major;
-        _minor = header.version_minor;
+    // allocate byte array
+    _bf = (unsigned char *)malloc(_bytes);
+    if (_bf == nullptr) {
+        printf("Memory Allocation error\n");
+        fclose(filePtr);
+        return 1;
+    }
 
-        // Allocate bit array
-        _bf = (unsigned char *)malloc(_bytes);
-        if (_bf == nullptr) {
-            close(fd);
-            return 1;
-        }
+    // read byte array
+    if (fread(_bf, sizeof(unsigned char), _bytes, filePtr) != _bytes) {
+        printf("Bytes read error\n");
+        free(_bf);
+        _bf = nullptr;
+        fclose(filePtr);
+        return 1;
+    }
 
-        // Read bit array
-        if (read(fd, _bf, _bytes) != static_cast<ssize_t>(_bytes)) {
-            free(_bf);
-            _bf = nullptr;
-            close(fd);
-            return 1;
-        }
-
-        _ready = 1;
-        close(fd);
-        return 0;
+    _ready = 1;
+    fclose(filePtr);
+    return 0;
 }
 
-unsigned char Bloom::get_hashes()
+int Bloom::get_hashes()
 {
     return _hashes;
 }
+
 unsigned long long int Bloom::get_bits()
 {
     return _bits;
 }
+
 unsigned long long int Bloom::get_bytes()
 {
     return _bytes;
 }
+
 const unsigned char *Bloom::get_bf()
 {
     return _bf;
@@ -465,6 +358,3 @@ unsigned int Bloom::murmurhash2(const void *key, int len, const unsigned int see
 
     return h;
 }
-
-
-

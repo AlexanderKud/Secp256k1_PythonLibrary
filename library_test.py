@@ -117,7 +117,7 @@ print(P_parsed2.hex())
 
 print(secp256k1.p2pkh_address_to_hash160('19HGKmF6Dv6FYJVg7T4KuaBi7gMQoKUtHF'))
 print()
-
+'''
 secp256k1.init_bloom(0, 1000000, 0.0000000001)
 secp256k1.bloom_info(0)
 val = "bloomCheck"
@@ -128,7 +128,8 @@ else:
     print(f'{val} is not in the bloom')
 secp256k1.bloom_save(0, "bloom_1.bf")
 print()
-   
+'''
+val = "bloomCheck2"
 secp256k1.bloom_load(1, "bloom_1.bf")
 secp256k1.bloom_info(1)
 if (secp256k1.bloom_check(1, val)):

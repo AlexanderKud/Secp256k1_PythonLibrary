@@ -5,6 +5,7 @@
 class Bloom
 {
 public:
+    Bloom();
     //Bloom(unsigned long long int entries, double error);
     ~Bloom();
     int check(const void *buffer, int len);
@@ -15,7 +16,7 @@ public:
     int load(const char *filename);
     void init_bloom(unsigned long long int entries, double error);
 
-    unsigned char get_hashes();
+    int get_hashes();
     unsigned long long int get_bits();
     unsigned long long int get_bytes();
     const unsigned char *get_bf();
@@ -26,23 +27,15 @@ private:
     int bloom_check_add(const void *buffer, int len, int add);
 
 private:
-    // These fields are part of the public interface of this structure.
-    // Client code may read these values if desired. Client code MUST NOT
-    // modify any of these.
     unsigned long long int _entries;
     unsigned long long int _bits;
     unsigned long long int _bytes;
-    unsigned char _hashes;
+    int _hashes;
     double _error;
-
-    // Fields below are private to the implementation. These may go away or
-    // change incompatibly at any moment. Client code MUST NOT access or rely
-    // on these.
-    unsigned char _ready;
-    unsigned char _major;
-    unsigned char _minor;
+    int _ready;
     double _bpe;
     unsigned char *_bf;
+
 };
 
 #endif // BLOOMFILTER_H
