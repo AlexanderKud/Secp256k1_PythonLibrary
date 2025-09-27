@@ -1,21 +1,15 @@
 import secp256k1
 
-
-secp256k1.check()
-pk = 115792089237316195423570985008687907852837564279074904382605163141518161494336
-P = secp256k1.scalar_multiplication(pk)
-print(P.hex())
-
 pk = 115792089237316195423570985008687907852837564279074904382605163141518161494336
 P = secp256k1.scalar_multiplication(pk)
 print(P.hex())
 print(secp256k1.point_to_upub(P)) # uncompressed pubkey
 print(secp256k1.point_to_cpub(P)) # compressed pubkey
 '''
-#ripemd160 hash
-#P2PKH  0
-#P2SH   1
-#BECH32 2
+ripemd160 hash
+P2PKH  0
+P2SH   1
+BECH32 2
 '''
 print(secp256k1.privatekey_to_hash160(0, False, pk)) # uncompressed ripemd160 hash
 print(secp256k1.privatekey_to_hash160(0, True, pk))  # compressed ripemd160 hash
@@ -124,23 +118,43 @@ print(P_parsed2.hex())
 print(secp256k1.p2pkh_address_to_hash160('19HGKmF6Dv6FYJVg7T4KuaBi7gMQoKUtHF'))
 print()
 
+secp256k1.init_bloom(0, 1000000, 0.0000000001)
+secp256k1.bloom_info(0)
+val = "bloomCheck"
+secp256k1.bloom_add(0, val)
+if (secp256k1.bloom_check(0, val)):
+    print(f'{val} is in the bloom')
+else:
+    print(f'{val} is not in the bloom')
+secp256k1.bloom_save(0, "bloom_1.bf")
+print()
+
+val = "bloomCheck2"
+secp256k1.bloom_load(1, "bloom_1.bf")
+secp256k1.bloom_info(1)
+if (secp256k1.bloom_check(1, val)):
+    print(f'{val} is in the bloom')
+else:
+    print(f'{val} is not in the bloom')
+
 Gp = secp256k1.scalar_multiplication(1)
 print(f'Point_on_curve: {secp256k1.point_on_curve(Gp)}')
 testP1 = secp256k1.add_points(Gp, Gp)
 print(f'Point_on_curve: {secp256k1.point_on_curve(testP1)}')
-testP2 = secp256k1.add_points(Gp, Gp)
-print(f'Point_on_curve: {secp256k1.point_on_curve(testP2)}')
 print()
 P0 = secp256k1.scalar_multiplication(0)
 print(P0 == infinityP)
 print(secp256k1.point_to_cpub(P0))
 P01 = secp256k1.scalar_multiplication(1)
 print(secp256k1.point_to_cpub(P01))
-N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
-P02 = secp256k1.scalar_multiplication(115792089237316195423570985008687907852837564279074904382605163141518161494339 + N * 2)
+P02 = secp256k1.scalar_multiplication(115792089237316195423570985008687907852837564279074904382605163141518161494339 + secp256k1.N * 2)
 print(secp256k1.point_to_cpub(P02))
 print(secp256k1.hash160_to_address(0, False, '7f4c4db9be542f0231327db9fe3d47987c7dc69b'))
 
 P_test = secp256k1.scalar_multiplication(57896044618658097711785492504343953926418782139537452191302581570759080747169)
 print(secp256k1.point_to_cpub(P_test))
 print(secp256k1.point_to_upub(P_test))
+print()
+Pn4 = secp256k1.scalar_multiplication(4)
+Pn2 = secp256k1.point_division(Pn4, 2)
+print(secp256k1.point_to_cpub(Pn2))

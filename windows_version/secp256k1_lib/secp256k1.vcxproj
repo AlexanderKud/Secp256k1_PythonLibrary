@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="Base58.h" />
     <ClInclude Include="Bech32.h" />
+    <ClInclude Include="Bloom.h" />
     <ClInclude Include="hash\ripemd160.h" />
     <ClInclude Include="hash\sha256.h" />
     <ClInclude Include="hash\sha512.h" />
@@ -27,6 +28,7 @@
   <ItemGroup>
     <ClCompile Include="Base58.cpp" />
     <ClCompile Include="Bech32.cpp" />
+    <ClCompile Include="Bloom.cpp" />
     <ClCompile Include="hash\ripemd160.cpp" />
     <ClCompile Include="hash\sha256.cpp" />
     <ClCompile Include="hash\sha512.cpp" />

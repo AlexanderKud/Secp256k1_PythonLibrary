@@ -1,5 +1,7 @@
 ﻿  Base58.cpp
   Bech32.cpp
+  Bloom.cpp
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Bloom.cpp(105,21): warning C4244: 'initializing': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
   ripemd160.cpp
   sha256.cpp
   sha512.cpp
@@ -14,6 +16,6 @@
      Creating library C:\Users\kudry\OneDrive\Документы\secp256k1_lib\x64\Release\secp256k1_lib.lib and object C:\Users\kudry\OneDrive\Документы\secp256k1_lib\x64\Release\secp256k1_lib.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 339 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 358 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   secp256k1.vcxproj -> C:\Users\kudry\OneDrive\Документы\secp256k1_lib\x64\Release\secp256k1_lib.dll

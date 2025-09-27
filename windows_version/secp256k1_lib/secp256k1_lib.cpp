@@ -1,6 +1,7 @@
 #include <iostream>
 #include "secp256k1_lib.h"
 #include "SECP256k1.h"
+#include "Bloom.h"
 
 void Init();
 void check();
@@ -27,8 +28,15 @@ void publickey_to_address(int type, bool compressed, unsigned char* publicKeyByt
 void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut);
 void publickey_to_point(char* publicKey, unsigned char* publicKeyBytesOut);
 void p2pkh_address_to_hash160(char* address, unsigned char* BytesOut);
+void init_bloom(int arrayIndex, unsigned long long entries, double error);
+void bloom_info(int arrayIndex);
+void bloom_save(int arrayIndex, char* filename);
+void bloom_load(int arrayIndex, char* filename);
+void bloom_add(int arrayIndex, char* item, int len);
+int bloom_check(int arrayIndex, char* item, int len);
 
 Secp256K1* secp256k1 = new Secp256K1();
+Bloom bf[2];
    
 void Init() {
     ::secp256k1->Init();
@@ -211,4 +219,29 @@ void p2pkh_address_to_hash160(char* address, unsigned char* BytesOut) {
     for(int i = 0; i < hash160.size(); i++) {
         BytesOut[i] = hash160[i];
     }
+}
+
+void init_bloom(int arrayIndex, unsigned long long entries, double error) {
+    ::bf[arrayIndex].init_bloom(entries, error);
+}
+
+void bloom_info(int arrayIndex) {
+    ::bf[arrayIndex].print();
+}
+
+void bloom_save(int arrayIndex, char* filename) {
+    ::bf[arrayIndex].save(filename);
+}
+
+void bloom_load(int arrayIndex, char* filename) {
+    ::bf[arrayIndex].load(filename);
+}
+
+void bloom_add(int arrayIndex, char* item, int len) {
+    ::bf[arrayIndex].add(item, len);
+}
+
+int bloom_check(int arrayIndex, char* item, int len) {
+    int in_bloom = ::bf[arrayIndex].check(item, len);
+    return in_bloom;
 }

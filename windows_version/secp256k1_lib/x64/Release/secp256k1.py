@@ -72,6 +72,24 @@ secp256k1.publickey_to_point.restype = None
 secp256k1.p2pkh_address_to_hash160.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 secp256k1.p2pkh_address_to_hash160.restype = None
 
+secp256k1.init_bloom.argtypes = [ctypes.c_int, ctypes.c_ulonglong, ctypes.c_double]
+secp256k1.init_bloom.restype = None
+
+secp256k1.bloom_info.argtypes = [ctypes.c_int]
+secp256k1.bloom_info.restype = None
+
+secp256k1.bloom_save.argtypes = [ctypes.c_int, ctypes.c_char_p]
+secp256k1.bloom_save.restype = None
+
+secp256k1.bloom_load.argtypes = [ctypes.c_int, ctypes.c_char_p]
+secp256k1.bloom_load.restype = None
+
+secp256k1.bloom_add.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+secp256k1.bloom_add.restype = None
+
+secp256k1.bloom_check.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+secp256k1.bloom_check.restype = ctypes.c_int
+
 N       = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 lambda1 = 0x5363ad4cc05c30e0a5261c028812645a122e22ea20816678df02967c1b23bd72
 lambda2 = 0xac9c52b33fa3cf1f5ad9e3fd77ed9ba4a880b9fc8ec739c2e0cfc810b51283ce
@@ -215,3 +233,23 @@ def p2pkh_address_to_hash160(address):
     res = bytes(25)
     secp256k1.p2pkh_address_to_hash160(addr, res)
     return res.hex()[2:42]
+    
+def init_bloom(index, entries, error):
+    secp256k1.init_bloom(index, entries, error)
+
+def bloom_info(index):
+    secp256k1.bloom_info(index)
+
+def bloom_save(index, filename):
+    secp256k1.bloom_save(index, filename.encode())
+    
+def bloom_load(index, filename):
+    secp256k1.bloom_load(index, filename.encode())
+
+def bloom_add(index, item):
+    if type(item) != bytes: item = str(item).encode()
+    secp256k1.bloom_add(index, item, len(item))
+
+def bloom_check(index, item):
+    if type(item) != bytes: item = str(item).encode()
+    return secp256k1.bloom_check(index, item, len(item))

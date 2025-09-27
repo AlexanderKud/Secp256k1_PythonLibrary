@@ -25,3 +25,9 @@ extern "C" __declspec(dllexport) void publickey_to_address(int type, bool compre
 extern "C" __declspec(dllexport) void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut);
 extern "C" __declspec(dllexport) void publickey_to_point(char* publicKey, unsigned char* publicKeyBytesOut);
 extern "C" __declspec(dllexport) void p2pkh_address_to_hash160(char* address, unsigned char* BytesOut);
+extern "C" __declspec(dllexport) void init_bloom(int arrayIndex, unsigned long long entries, double error);
+extern "C" __declspec(dllexport) void bloom_info(int arrayIndex);
+extern "C" __declspec(dllexport) void bloom_save(int arrayIndex, char* filename);
+extern "C" __declspec(dllexport) void bloom_load(int arrayIndex, char* filename);
+extern "C" __declspec(dllexport) void bloom_add(int arrayIndex, char* item, int len);
+extern "C" __declspec(dllexport) int bloom_check(int arrayIndex, char* item, int len);

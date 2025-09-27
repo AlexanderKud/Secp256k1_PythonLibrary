@@ -1,5 +1,6 @@
 C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Base58.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Base58.obj
 C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Bech32.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Bech32.obj
+C:\Users\kudry\OneDrive\Документы\secp256k1_lib\Bloom.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\Bloom.obj
 C:\Users\kudry\OneDrive\Документы\secp256k1_lib\hash\ripemd160.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\ripemd160.obj
 C:\Users\kudry\OneDrive\Документы\secp256k1_lib\hash\sha256.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\sha256.obj
 C:\Users\kudry\OneDrive\Документы\secp256k1_lib\hash\sha512.cpp;C:\Users\kudry\OneDrive\Документы\secp256k1_lib\secp256k1_lib\x64\Release\sha512.obj
