@@ -22,9 +22,9 @@ extern "C" {
         std::cout << ::secp256k1->GetPublicKeyHex(true, P) << std::endl;
     }
     
-    void scalar_multiplication(char* priv, unsigned char* publicKeyBytesOut) {
+    void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut) {
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         if (pk.IsZero()) {
             Point P;
             P.x.SetInt32(0);
@@ -37,10 +37,10 @@ extern "C" {
         }        
     }
     
-    void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+    void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         Point ret = ::secp256k1->PointMultiplication(P, &pk);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
@@ -64,10 +64,10 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
-    void add_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+    void add_point_scalar(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
         Point ret = ::secp256k1->AddPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
@@ -80,10 +80,10 @@ extern "C" {
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
     
-    void subtract_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+    void subtract_point_scalar(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         Point Q = ::secp256k1->ComputePublicKey(&pk);
         Point ret = ::secp256k1->SubtractPoints2(P, Q);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
@@ -112,9 +112,9 @@ extern "C" {
         x2.Get32Bytes(BytesOut);
     }
     
-    void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut) {
+    void privatekey_to_hash160(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut) {
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         Point P = ::secp256k1->ComputePublicKey(&pk);
         ::secp256k1->GetHash160(type, compressed, P, BytesOut);
     }
@@ -124,18 +124,18 @@ extern "C" {
         ::secp256k1->GetHash160(type, compressed, P, BytesOut);
     }
     
-    void privatekey_to_uwif(char* priv, unsigned char* BytesOut) {
+    void privatekey_to_uwif(unsigned char* priv, unsigned char* BytesOut) {
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         std::string wif = ::secp256k1->GetPrivAddress(false, pk);
         for(int i = 0; i < wif.size(); i++) {
             BytesOut[i] = wif[i];
         }
     }
     
-    void privatekey_to_cwif(char* priv, unsigned char* BytesOut) {
+    void privatekey_to_cwif(unsigned char* priv, unsigned char* BytesOut) {
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         std::string wif = ::secp256k1->GetPrivAddress(true, pk);
         for(int i = 0; i < wif.size(); i++) {
             BytesOut[i] = wif[i];
@@ -147,9 +147,9 @@ extern "C" {
         pk.Get32Bytes(BytesOut);
     }
     
-    void privatekey_to_address(int type, bool compressed, char* priv, unsigned char* BytesOut) {
+    void privatekey_to_address(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut) {
         Int pk;
-        pk.SetBase10(priv);
+        pk.Set32Bytes(priv);
         Point P = ::secp256k1->ComputePublicKey(&pk);
         std::string address = ::secp256k1->GetAddress(type, compressed, P);
         for(int i = 0; i < address.size(); i++) {
