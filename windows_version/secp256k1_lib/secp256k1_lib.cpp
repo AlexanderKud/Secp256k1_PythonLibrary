@@ -5,25 +5,24 @@
 
 void Init();
 void check();
-void scalar_multiplication(char* priv, unsigned char* publicKeyBytesOut);
-void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut);
+void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut);
+void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
 void double_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 void negate_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut);
-void add_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut);
+void add_point_scalar(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
 void subtract_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut);
-void subtract_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut);
+void subtract_point_scalar(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
 void increment_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 void decrement_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 bool point_on_curve(unsigned char* publicKeyBytesIn);
 void get_y(unsigned char* BytesIn, bool isEven, unsigned char* BytesOut);
-void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut);
+void privatekey_to_hash160(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut);
 void publickey_to_hash160(int type, bool compressed, unsigned char* publicKeyBytesIn, unsigned char* BytesOut);
-void privatekey_to_uwif(char* priv, unsigned char* BytesOut);
-void privatekey_to_cwif(char* priv, unsigned char* BytesOut);
-void privatekey_to_wif(bool compressed, char* priv, unsigned char* BytesOut);
+void privatekey_to_uwif(unsigned char* priv, unsigned char* BytesOut);
+void privatekey_to_cwif(unsigned char* priv, unsigned char* BytesOut);
 void wif_to_privatekey(char* wif, unsigned char* BytesOut);
-void privatekey_to_address(int type, bool compressed, char* priv, unsigned char* BytesOut);
+void privatekey_to_address(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut);
 void publickey_to_address(int type, bool compressed, unsigned char* publicKeyBytesIn, unsigned char* BytesOut);
 void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut);
 void publickey_to_point(char* publicKey, unsigned char* publicKeyBytesOut);
@@ -50,9 +49,9 @@ void check() {
     std::cout << ::secp256k1->GetPublicKeyHex(true, P) << std::endl;
 }
 
-void scalar_multiplication(char* priv, unsigned char* publicKeyBytesOut) {
+void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut) {
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     if (pk.IsZero()) {
          Point P;
         P.x.SetInt32(0);
@@ -65,10 +64,10 @@ void scalar_multiplication(char* priv, unsigned char* publicKeyBytesOut) {
     }        
 }    
     
-void point_multiplication(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
     Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     Point ret = ::secp256k1->PointMultiplication(P, &pk);
     ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
 }
@@ -92,10 +91,10 @@ void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesI
     ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
 }
 
-void add_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+void add_point_scalar(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
     Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     Point Q = ::secp256k1->ComputePublicKey(&pk);
     Point ret = ::secp256k1->AddPoints2(P, Q);
     ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
@@ -108,10 +107,10 @@ void subtract_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyB
     ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
 }
 
-void subtract_point_scalar(unsigned char* publicKeyBytesIn, char* priv, unsigned char* publicKeyBytesOut) {
+void subtract_point_scalar(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
     Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     Point Q = ::secp256k1->ComputePublicKey(&pk);
     Point ret = ::secp256k1->SubtractPoints2(P, Q);
     ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
@@ -140,9 +139,9 @@ void get_y(unsigned char* BytesIn, bool isEven, unsigned char* BytesOut) {
     x2.Get32Bytes(BytesOut);
 }
 
-void privatekey_to_hash160(int type, bool compressed, char* priv, unsigned char* BytesOut) {
+void privatekey_to_hash160(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut) {
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     Point P = ::secp256k1->ComputePublicKey(&pk);
     ::secp256k1->GetHash160(type, compressed, P, BytesOut);
 }
@@ -152,27 +151,27 @@ void publickey_to_hash160(int type, bool compressed, unsigned char* publicKeyByt
     ::secp256k1->GetHash160(type, compressed, P, BytesOut);
 }
 
-void privatekey_to_uwif(char* priv, unsigned char* BytesOut) {
+void privatekey_to_uwif(unsigned char* priv, unsigned char* BytesOut) {
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     std::string wif = ::secp256k1->GetPrivAddress(false, pk);
     for(int i = 0; i < wif.size(); i++) {
         BytesOut[i] = wif[i];
     }
 }
     
-void privatekey_to_cwif(char* priv, unsigned char* BytesOut) {
+void privatekey_to_cwif(unsigned char* priv, unsigned char* BytesOut) {
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     std::string wif = ::secp256k1->GetPrivAddress(true, pk);
     for(int i = 0; i < wif.size(); i++) {
         BytesOut[i] = wif[i];
     }
 }
 
-void privatekey_to_wif(bool compressed, char* priv, unsigned char* BytesOut) {
+void privatekey_to_wif(bool compressed, unsigned char* priv, unsigned char* BytesOut) {
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     std::string wif = ::secp256k1->GetPrivAddress(compressed, pk);
     for(int i = 0; i < wif.size(); i++) {
         BytesOut[i] = wif[i];
@@ -184,9 +183,9 @@ void wif_to_privatekey(char* wif, unsigned char* BytesOut) {
     pk.Get32Bytes(BytesOut);
 }
 
-void privatekey_to_address(int type, bool compressed, char* priv, unsigned char* BytesOut) {
+void privatekey_to_address(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut) {
     Int pk;
-    pk.SetBase10(priv);
+    pk.Set32Bytes(priv);
     Point P = ::secp256k1->ComputePublicKey(&pk);
     std::string address = ::secp256k1->GetAddress(type, compressed, P);
     for(int i = 0; i < address.size(); i++) {
