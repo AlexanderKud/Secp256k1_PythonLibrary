@@ -102,7 +102,7 @@ void Bloom::print()
     printf("  Bits       : %llu\n", _bits);
     printf("  Bits/Elem  : %f\n", _bpe);
     printf("  Bytes      : %llu", _bytes);
-    unsigned int KB = _bytes / 1024;
+    unsigned int KB = (unsigned int)_bytes / 1024;
     unsigned int MB = KB / 1024;
     //printf(" (%u KB, %u MB)\n", KB, MB);
     printf(" (%u MB)\n", MB);

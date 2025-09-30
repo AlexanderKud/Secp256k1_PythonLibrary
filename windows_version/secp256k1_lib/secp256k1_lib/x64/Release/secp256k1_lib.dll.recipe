@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\kudry\OneDrive\Документы\secp256k1_lib\x64\Release\secp256k1_lib.dll</FullPath>
+      <FullPath>C:\Users\kudry\OneDrive\Документы\windows_version\secp256k1_lib\x64\Release\secp256k1_lib.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
