@@ -692,8 +692,34 @@ std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
     char output[128];
     uint8_t h160[20];
     GetHash160(type, compressed, pubKey, h160);
-    segwit_addr_encode(output,"bc",0,h160,20);
+    segwit_addr_encode(output, "bc", 0, h160, 20);
     return std::string(output);
+  }
+  break;
+
+  case BECH32_P2WSH:
+  {
+    if (!compressed) {
+      return " BECH32: Only compressed key ";
+    }
+    unsigned char pubKeyBytes[33];
+    pubKeyBytes[0] = pubKey.y.IsEven() ? 0x2 : 0x3;
+    pubKey.x.Get32Bytes(pubKeyBytes + 1);
+
+    unsigned char p2wsh[35];
+    p2wsh[0]  = 0x21;
+    p2wsh[34] = 0xac;
+    for (size_t i = 0; i < sizeof(pubKeyBytes); ++i) {
+        p2wsh[i + 1] = pubKeyBytes[i];
+    }
+
+    unsigned char sha256pk[64];
+    sha256(p2wsh, sizeof(p2wsh), sha256pk);
+
+    char p2wsh_address[62];
+    segwit_addr_encode(p2wsh_address, "bc", 0, sha256pk, 32);
+
+    return std::string(p2wsh_address);
   }
   break;
 

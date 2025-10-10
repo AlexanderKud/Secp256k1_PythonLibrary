@@ -158,3 +158,6 @@ print()
 Pn4 = secp256k1.scalar_multiplication(4)
 Pn2 = secp256k1.point_division(Pn4, 2)
 print(secp256k1.point_to_cpub(Pn2))
+test_addr = 'bc1qs7ql5gdkuzqvqf3zh2rwpmdmasnw9qtdgvhzujug3gtsdl99sduskgxms6'
+print(secp256k1.publickey_to_bech32_p2wsh_address(Pn4))
+print(test_addr == secp256k1.publickey_to_bech32_p2wsh_address(Pn4))
