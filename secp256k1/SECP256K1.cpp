@@ -697,28 +697,6 @@ std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
   }
   break;
 
-  case BECH32_P2WSH:
-  {
-    if (!compressed) {
-      return " BECH32: Only compressed key ";
-    }
-
-    unsigned char p2wsh[35];
-    p2wsh[0]  = 0x21;
-    p2wsh[1]  = pubKey.y.IsEven() ? 0x2 : 0x3;
-    pubKey.x.Get32Bytes(p2wsh + 2);
-    p2wsh[34] = 0xac;
-
-    unsigned char sha256pk[64];
-    sha256(p2wsh, sizeof(p2wsh), sha256pk);
-
-    char p2wsh_address[62];
-    segwit_addr_encode(p2wsh_address, "bc", 0, sha256pk, 32);
-
-    return std::string(p2wsh_address);
-  }
-  break;
-
   case P2SH:
     if (!compressed) {
       return " P2SH: Only compressed key ";
@@ -732,6 +710,24 @@ std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
 
   // Base58
   return EncodeBase58(address, address + 25);
+
+}
+
+std::string Secp256K1::GetBech32P2WSHAddress(Point &pubKey) {
+
+   unsigned char p2wsh[35];
+   p2wsh[0]  = 0x21;
+   p2wsh[1]  = pubKey.y.IsEven() ? 0x2 : 0x3;
+   pubKey.x.Get32Bytes(p2wsh + 2);
+   p2wsh[34] = 0xac;
+
+   unsigned char sha256pk[64];
+   sha256(p2wsh, 35, sha256pk);
+
+   char p2wsh_address[62];
+   segwit_addr_encode(p2wsh_address, "bc", 0, sha256pk, 32);
+
+   return std::string(p2wsh_address);
 
 }
 
