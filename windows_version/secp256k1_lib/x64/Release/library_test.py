@@ -100,13 +100,13 @@ pnt = secp256k1.scalar_multiplication(77)
 print(secp256k1.publickey_to_address(0, False, pnt))
 print(secp256k1.publickey_to_address(0, True, pnt))
 print(secp256k1.publickey_to_address(1, True, pnt))
-print(secp256k1.publickey_to_address(2, True, pnt))
+print(secp256k1.publickey_to_bech32_address(pnt))
 
 pnt = secp256k1.scalar_multiplication(7777)
 print(secp256k1.publickey_to_address(0, False, pnt))
 print(secp256k1.publickey_to_address(0, True, pnt))
 print(secp256k1.publickey_to_address(1, True, pnt))
-print(secp256k1.publickey_to_address(2, True, pnt))
+print(secp256k1.publickey_to_bech32_address(pnt))
 print()
 
 P_parsed = secp256k1.publickey_to_point('031cf3c12331b71866c1c5318f5ca47eedcb875a823218b5a39b070506ed55d204')
@@ -161,3 +161,7 @@ print(secp256k1.point_to_cpub(Pn2))
 test_addr = 'bc1qs7ql5gdkuzqvqf3zh2rwpmdmasnw9qtdgvhzujug3gtsdl99sduskgxms6'
 print(secp256k1.publickey_to_bech32_p2wsh_address(Pn4))
 print(test_addr == secp256k1.publickey_to_bech32_p2wsh_address(Pn4))
+test_addr = 'bc1qcsh8a7f0mdsr47zy6pj04tv4mwdumlfaslcy8n'
+print(secp256k1.publickey_to_bech32_address(Pn4))
+print(test_addr == secp256k1.publickey_to_bech32_address(Pn4))
+print(test_addr == secp256k1.privatekey_to_bech32_address(4))

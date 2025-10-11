@@ -51,107 +51,6 @@ void PrintResult(bool ok) {
   }
 }
 
-void CheckAddress(Secp256K1 *T,std::string address,std::string privKeyStr) {
-
-  bool isCompressed;
-  int type;
-
-  Int privKey = T->DecodePrivateKey((char *)privKeyStr.c_str(),&isCompressed);
-  Point pub = T->ComputePublicKey(&privKey);
-
-  switch (address.data()[0]) {
-  case '1':
-    type = P2PKH; break;
-  case '3':
-    type = P2SH; break;
-  case 'b':
-  case 'B':
-    type = BECH32; break;
-  default:
-    printf("Failed ! \n%s Address format not supported\n", address.c_str());
-    return;
-  }
-
-  std::string calcAddress = T->GetAddress(type, isCompressed, pub);
-
-  printf("Adress : %s ", address.c_str());
-
-  if (address == calcAddress) {
-    printf("OK!\n");
-    return;
-  }
-
-  printf("Failed ! \n %s\n", calcAddress.c_str());
-
-}
-
-void Secp256K1::Check() {
-
-  printf("Check Generator :");
-
-  bool ok = true;
-  int i = 0;
-  while(i < 256*32 && EC(GTable[i])) {
-    i++;
-  }
-  PrintResult(i == 256*32);
-
-  printf("Check Double :");
-  Point Pt(G);
-  Point R1;
-  Point R2;
-  Point R3;
-  R1 = Double(G);
-  R1.Reduce();
-  PrintResult(EC(R1));
-
-  printf("Check Add :");
-  R2 = Add(G,R1);
-  R3 = Add(R1,R2);
-  R3.Reduce();
-  PrintResult(EC(R3));
-
-  printf("Check GenKey :");
-  Int privKey;
-  privKey.SetBase16("46b9e861b63d3509c88b7817275a30d22d62c8cd8fa6486ddee35ef0d8e0495f");
-  Point pub = ComputePublicKey(&privKey);
-  Point expectedPubKey;
-  expectedPubKey.x.SetBase16("2500e7f3fbddf2842903f544ddc87494ce95029ace4e257d54ba77f2bc1f3a88");
-  expectedPubKey.y.SetBase16("37a9461c4f1c57fecc499753381e772a128a5820a924a2fa05162eb662987a9f");
-  expectedPubKey.z.SetInt32(1);
-
-  PrintResult(pub.equals(expectedPubKey));
-
-  CheckAddress(this,"15t3Nt1zyMETkHbjJTTshxLnqPzQvAtdCe","5HqoeNmaz17FwZRqn7kCBP1FyJKSe4tt42XZB7426EJ2MVWDeqk");
-  CheckAddress(this,"1BoatSLRHtKNngkdXEeobR76b53LETtpyT","5J4XJRyLVgzbXEgh8VNi4qovLzxRftzMd8a18KkdXv4EqAwX3tS");
-  CheckAddress(this,"1Test6BNjSJC5qwYXsjwKVLvz7DpfLehy","5HytzR8p5hp8Cfd8jsVFnwMNXMsEW1sssFxMQYqEUjGZN72iLJ2");
-  CheckAddress(this,"16S5PAsGZ8VFM1CRGGLqm37XHrp46f6CTn","KxMUSkFhEzt2eJHscv2vNSTnnV2cgAXgL4WDQBTx7Ubd9TZmACAz");
-  CheckAddress(this,"1Tst2RwMxZn9cYY5mQhCdJic3JJrK7Fq7","L1vamTpSeK9CgynRpSJZeqvUXf6dJa25sfjb2uvtnhj65R5TymgF");
-  CheckAddress(this,"3CyQYcByvcWK8BkYJabBS82yDLNWt6rWSx","KxMUSkFhEzt2eJHscv2vNSTnnV2cgAXgL4WDQBTx7Ubd9TZmACAz");
-  CheckAddress(this,"31to1KQe67YjoDfYnwFJThsGeQcFhVDM5Q","KxV2Tx5jeeqLHZ1V9ufNv1doTZBZuAc5eY24e6b27GTkDhYwVad7");
-  CheckAddress(this,"bc1q6tqytpg06uhmtnhn9s4f35gkt8yya5a24dptmn","L2wAVD273GwAxGuEDHvrCqPfuWg5wWLZWy6H3hjsmhCvNVuCERAQ");
-
-  // 1ViViGLEawN27xRzGrEhhYPQrZiTKvKLo
-  pub.x.SetBase16(/*04*/"75249c39f38baa6bf20ab472191292349426dc3652382cdc45f65695946653dc");
-  pub.y.SetBase16("978b2659122fe1df1be132167f27b74e5d4a2f3ecbbbd0b3fbcc2f4983518674");
-  printf("Check Calc PubKey (full) %s :",GetAddress(P2PKH, false,pub).c_str());
-  PrintResult(EC(pub));
-
-  // 385cR5DM96n1HvBDMzLHPYcw89fZAXULJP
-  pub.x.SetBase16(/*03*/"c931af9f331b7a9eb2737667880dacb91428906fbffad0173819a873172d21c4");
-  pub.y = GetY(pub.x,false);
-  printf("Check Calc PubKey (even) %s:",GetAddress(P2SH, true, pub).c_str());
-  PrintResult(EC(pub));
-
-  // 18aPiLmTow7Xgu96msrDYvSSWweCvB9oBA
-  pub.x.SetBase16(/*03*/"3bf3d80f868fa33c6353012cb427e98b080452f19b5c1149ea2acfe4b7599739");
-  pub.y = GetY(pub.x,false);
-  printf("Check Calc PubKey (odd) %s:",GetAddress(P2PKH, true, pub).c_str());
-  PrintResult(EC(pub));
-
-}
-
-
 Point Secp256K1::ComputePublicKey(Int *privKey) {
 
   int i = 0;
@@ -645,7 +544,7 @@ std::string Secp256K1::GetPrivAddress(bool compressed, Int &privKey) {
 
 }
 
-std::string Secp256K1::GetAddress(int type, bool compressed, unsigned char *hash160) {
+std::string Secp256K1::GetAddressFromHash(int type, bool compressed, unsigned char *hash160) {
 
   unsigned char address[25];
   switch(type) {
@@ -674,7 +573,7 @@ std::string Secp256K1::GetAddress(int type, bool compressed, unsigned char *hash
 
 }
 
-std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
+std::string Secp256K1::GetAddressFromPub(int type, bool compressed, Point &pubKey) {
 
   unsigned char address[25];
 
@@ -684,19 +583,6 @@ std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
     address[0] = 0x00;
     break;
 
-  case BECH32:
-  {
-    if (!compressed) {
-      return " BECH32: Only compressed key ";
-    }
-    char output[128];
-    uint8_t h160[20];
-    GetHash160(type, compressed, pubKey, h160);
-    segwit_addr_encode(output, "bc", 0, h160, 20);
-    return std::string(output);
-  }
-  break;
-
   case P2SH:
     if (!compressed) {
       return " P2SH: Only compressed key ";
@@ -705,11 +591,21 @@ std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
     break;
   }
 
-  GetHash160(type,compressed,pubKey, address + 1);
+  GetHash160(type, compressed, pubKey, address + 1);
   sha256_checksum(address, 21, address + 21);
 
   // Base58
   return EncodeBase58(address, address + 25);
+
+}
+
+std::string Secp256K1::GetBech32Address(Point &pubKey) {
+
+   char output[128];
+   uint8_t h160[20];
+   GetHash160(BECH32, true, pubKey, h160);
+   segwit_addr_encode(output, "bc", 0, h160, 20);
+   return std::string(output);
 
 }
 

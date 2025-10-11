@@ -19,14 +19,14 @@ public:
   void Init();
   Point ComputePublicKey(Int *privKey);
   Point NextKey(Point &key);
-  void Check();
   bool  EC(Point &p);
 
   void GetHash160(int type, bool compressed, Point &pubKey, unsigned char *hash);
   std::string GetHashFromP2PKHAddress(char* address);
-  std::string GetAddress(int type, bool compressed, Point &pubKey);
+  std::string GetAddressFromPub(int type, bool compressed, Point &pubKey);
+  std::string GetAddressFromHash(int type, bool compressed, unsigned char *hash160);
+  std::string GetBech32Address(Point &pubKey);
   std::string GetBech32P2WSHAddress(Point &pubKey);
-  std::string GetAddress(int type, bool compressed, unsigned char *hash160);
   std::string GetPrivAddress(bool compressed, Int &privKey);
   std::string GetPublicKeyHex(bool compressed, Point &p);
   Point ParsePublicKeyHex(std::string str, bool &isCompressed);
