@@ -234,7 +234,7 @@ def privatekey_to_bech32_address(pk):
     pvk = (pk % N).to_bytes(32, 'big')
     res = bytes(42)
     secp256k1.privatekey_to_bech32_address(pvk, res)
-    return res.rstrip(b'\x00').decode('utf-8')
+    return res.decode('utf-8')
 
 def publickey_to_bech32_address(p):
     res = bytes(42)
@@ -284,4 +284,10 @@ def bloom_add(index, item):
 
 def bloom_check(index, item):
     if type(item) != bytes: item = str(item).encode('utf-8')
+    return secp256k1.bloom_check(index, item, len(item))
+
+def bloom_add_bytes(index, item):
+    secp256k1.bloom_add(index, item, len(item))
+
+def bloom_check_bytes(index, item):
     return secp256k1.bloom_check(index, item, len(item))
