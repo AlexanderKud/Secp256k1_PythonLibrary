@@ -702,16 +702,12 @@ std::string Secp256K1::GetAddress(int type, bool compressed, Point &pubKey) {
     if (!compressed) {
       return " BECH32: Only compressed key ";
     }
-    unsigned char pubKeyBytes[33];
-    pubKeyBytes[0] = pubKey.y.IsEven() ? 0x2 : 0x3;
-    pubKey.x.Get32Bytes(pubKeyBytes + 1);
-
+    
     unsigned char p2wsh[35];
     p2wsh[0]  = 0x21;
+    p2wsh[1]  = pubKey.y.IsEven() ? 0x2 : 0x3;
+    pubKey.x.Get32Bytes(p2wsh + 2);
     p2wsh[34] = 0xac;
-    for (size_t i = 0; i < sizeof(pubKeyBytes); ++i) {
-        p2wsh[i + 1] = pubKeyBytes[i];
-    }
 
     unsigned char sha256pk[64];
     sha256(p2wsh, sizeof(p2wsh), sha256pk);
