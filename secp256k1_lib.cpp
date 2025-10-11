@@ -164,6 +164,14 @@ extern "C" {
             BytesOut[i] = address[i];
         }
     }
+
+    void publickey_to_bech32_p2wsh_address(unsigned char* publicKeyBytesIn, unsigned char* BytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        std::string address = ::secp256k1->GetBech32P2WSHAddress(P);
+        for(int i = 0; i < address.size(); i++) {
+            BytesOut[i] = address[i];
+        }
+    }
     
     void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut) {
         std::string address = ::secp256k1->GetAddress(type, compressed, hash160);
