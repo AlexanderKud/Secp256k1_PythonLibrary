@@ -9,7 +9,6 @@
 #define P2PKH  0
 #define P2SH   1
 #define BECH32 2
-#define BECH32_P2WSH 3
 
 class Secp256K1 {
 
@@ -26,6 +25,7 @@ public:
   void GetHash160(int type, bool compressed, Point &pubKey, unsigned char *hash);
   std::string GetHashFromP2PKHAddress(char* address);
   std::string GetAddress(int type, bool compressed, Point &pubKey);
+  std::string GetBech32P2WSHAddress(Point &pubKey);
   std::string GetAddress(int type, bool compressed, unsigned char *hash160);
   std::string GetPrivAddress(bool compressed, Int &privKey);
   std::string GetPublicKeyHex(bool compressed, Point &p);

@@ -77,9 +77,10 @@
               "RelativeDocumentMoniker": "secp256k1_lib.cpp",
               "ToolTip": "C:\\Users\\kudry\\Documents\\Secp256k1_PythonLibrary1\\windows_version\\secp256k1_lib\\secp256k1_lib.cpp",
               "RelativeToolTip": "secp256k1_lib.cpp",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAALsAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAMAAAAAAAAAAAAAAANAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-26T06:27:05.465Z"
+              "WhenOpened": "2025-09-26T06:27:05.465Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -89,9 +90,10 @@
               "RelativeDocumentMoniker": "secp256k1_lib.h",
               "ToolTip": "C:\\Users\\kudry\\Documents\\Secp256k1_PythonLibrary1\\windows_version\\secp256k1_lib\\secp256k1_lib.h",
               "RelativeToolTip": "secp256k1_lib.h",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAUAAABpAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABcAAACCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-09-26T06:26:40.277Z"
+              "WhenOpened": "2025-09-26T06:26:40.277Z",
+              "EditorCaption": ""
             }
           ]
         }

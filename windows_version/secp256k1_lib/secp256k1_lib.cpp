@@ -24,6 +24,7 @@ void privatekey_to_cwif(unsigned char* priv, unsigned char* BytesOut);
 void wif_to_privatekey(char* wif, unsigned char* BytesOut);
 void privatekey_to_address(int type, bool compressed, unsigned char* priv, unsigned char* BytesOut);
 void publickey_to_address(int type, bool compressed, unsigned char* publicKeyBytesIn, unsigned char* BytesOut);
+void publickey_to_bech32_p2wsh_address(unsigned char* publicKeyBytesIn, unsigned char* BytesOut);
 void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut);
 void publickey_to_point(char* publicKey, unsigned char* publicKeyBytesOut);
 void p2pkh_address_to_hash160(char* address, unsigned char* BytesOut);
@@ -199,6 +200,14 @@ void publickey_to_address(int type, bool compressed, unsigned char* publicKeyByt
     for(int i = 0; i < address.size(); i++) {
         BytesOut[i] = address[i];
     }
+}
+
+void publickey_to_bech32_p2wsh_address(unsigned char* publicKeyBytesIn, unsigned char* BytesOut) {
+     Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+     std::string address = ::secp256k1->GetBech32P2WSHAddress(P);
+     for(int i = 0; i < address.size(); i++) {
+         BytesOut[i] = address[i];
+     }
 }
 
 void hash160_to_address(int type, bool compressed, unsigned char* hash160, unsigned char* BytesOut) {
