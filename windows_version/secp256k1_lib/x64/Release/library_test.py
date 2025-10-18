@@ -94,7 +94,7 @@ pvk = 33
 print(secp256k1.privatekey_to_address(0, False, pvk))
 print(secp256k1.privatekey_to_address(0, True, pvk))
 print(secp256k1.privatekey_to_address(1, True, pvk))
-print(secp256k1.privatekey_to_address(2, True, pvk))
+print(secp256k1.privatekey_to_bech32_address(pvk))
 
 pnt = secp256k1.scalar_multiplication(77)
 print(secp256k1.publickey_to_address(0, False, pnt))

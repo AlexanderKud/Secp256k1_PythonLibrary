@@ -26,7 +26,10 @@ public:
   Int(int64_t i64);
   Int(uint64_t u64);
   Int(Int *a);
-
+  
+  // Multiplicative Inverse Mod N (Group Order)
+  void MultInvModN();
+  
   // Op
   void Add(uint64_t a);
   void Add(Int *a);
@@ -130,6 +133,7 @@ public:
 
   // Setter
   void SetInt32(uint32_t value);
+  void SetInt64(uint64_t value);
   void Set(Int *a);
   void SetBase10(char *value);
   void SetBase16(char *value);

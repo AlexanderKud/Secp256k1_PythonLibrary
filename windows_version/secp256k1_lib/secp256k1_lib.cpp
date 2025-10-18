@@ -7,6 +7,7 @@ void Init();
 void check();
 void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut);
 void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
+void point_division(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
 void double_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 void negate_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut);
@@ -71,6 +72,15 @@ void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, 
     Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
     Int pk;
     pk.Set32Bytes(priv);
+    Point ret = ::secp256k1->PointMultiplication(P, &pk);
+    ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+}
+
+void point_division(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
+    Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+    Int pk;
+    pk.Set32Bytes(priv);
+    pk.MultInvModN();
     Point ret = ::secp256k1->PointMultiplication(P, &pk);
     ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
 }

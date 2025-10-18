@@ -4,6 +4,7 @@ extern "C" __declspec(dllexport) void Init();
 extern "C" __declspec(dllexport) void check();
 extern "C" __declspec(dllexport) void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut);
 extern "C" __declspec(dllexport) void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
+extern "C" __declspec(dllexport) void point_division(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
 extern "C" __declspec(dllexport) void double_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 extern "C" __declspec(dllexport) void negate_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut);
 extern "C" __declspec(dllexport) void add_points(unsigned char* publicKeyBytesIn1, unsigned char* publicKeyBytesIn2, unsigned char* publicKeyBytesOut);

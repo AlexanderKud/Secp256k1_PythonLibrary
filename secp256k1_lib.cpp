@@ -44,6 +44,15 @@ extern "C" {
         Point ret = ::secp256k1->PointMultiplication(P, &pk);
         ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
     }
+
+    void point_division(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut) {
+        Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
+        Int pk;
+        pk.Set32Bytes(priv);
+        pk.MultInvModN();
+        Point ret = ::secp256k1->PointMultiplication(P, &pk);
+        ::secp256k1->GetPubKeyBytes(false, ret, publicKeyBytesOut);
+    }
     
     void double_point(unsigned char* publicKeyBytesIn, unsigned char* publicKeyBytesOut) {
         Point P = ::secp256k1->SetPubKeyBytes(publicKeyBytesIn);
