@@ -20,7 +20,7 @@ def test_func():
     #address = '1LagHJk2FyCV2VzrNHVqg3gYG4TSYwDV4m'
     #wif ='5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAvUcVfH'
     for i in range(2**16):
-        P = secp256k1.point_division2(P, 2)
+        P = secp256k1.point_division(P, 2)
         #print(hash160)
     
 print("test_func:", timeit.timeit(test_func, number=1))
