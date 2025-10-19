@@ -65,7 +65,7 @@ void Int::Set(Int *a) {
 
 void Int::MultInvModN() {
   
-  static Int m;
+  Int m;
   m.SetBase10("115792089237316195423570985008687907852837564279074904382605163141518161494337");
   Int u(this); 
   Int v, x1, x2; 
