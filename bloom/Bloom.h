@@ -1,7 +1,6 @@
 #ifndef BLOOMFILTER_H
 #define BLOOMFILTER_H
 
-
 class Bloom
 {
 public:
