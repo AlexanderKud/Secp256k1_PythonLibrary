@@ -57,7 +57,7 @@ void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut
     Int pk;
     pk.Set32Bytes(priv);
     if (pk.IsZero()) {
-         Point P;
+        Point P;
         P.x.SetInt32(0);
         P.y.SetInt32(0);
         ::secp256k1->GetPubKeyBytes(false, P, publicKeyBytesOut);
