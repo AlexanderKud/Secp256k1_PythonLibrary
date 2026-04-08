@@ -1,6 +1,6 @@
 #pragma once
 
-extern "C" __declspec(dllexport) void Init();
+extern "C" __declspec(dllexport) void Init(int blf_num);
 extern "C" __declspec(dllexport) void check();
 extern "C" __declspec(dllexport) void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut);
 extern "C" __declspec(dllexport) void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);

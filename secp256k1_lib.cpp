@@ -8,10 +8,11 @@
 extern "C" {
     
     Secp256K1* secp256k1 = new Secp256K1();
-    Bloom bf[2];
+    Bloom* bf;
     
-    void Init() {
+    void Init(int blf_num) {
         ::secp256k1->Init();
+        ::bf = new Bloom[blf_num];
     }
     
     void check() {

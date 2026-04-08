@@ -3,7 +3,7 @@
 #include "SECP256k1.h"
 #include "Bloom.h"
 
-void Init();
+void Init(int blf_num);
 void check();
 void scalar_multiplication(unsigned char* priv, unsigned char* publicKeyBytesOut);
 void point_multiplication(unsigned char* publicKeyBytesIn, unsigned char* priv, unsigned char* publicKeyBytesOut);
@@ -39,10 +39,11 @@ void bloom_add(int arrayIndex, char* item, int len);
 int bloom_check(int arrayIndex, char* item, int len);
 
 Secp256K1* secp256k1 = new Secp256K1();
-Bloom bf[2];
+Bloom* bf;
    
-void Init() {
+void Init(int blf_num) {
     ::secp256k1->Init();
+    ::bf = new Bloom[blf_num];
 }
     
 void check() {
