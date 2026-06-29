@@ -148,6 +148,14 @@ def point_to_cpub(pBytes):
     prefix = '02' if (last_byte & 1) == 0 else '03'
     return prefix + ph[2:66]
 
+def point_get_x(pBytes):
+    ph = pBytes.hex()
+    return ph[2:66]
+
+def point_get_y(pBytes):
+    ph = pBytes.hex()
+    return ph[66:]
+
 def double_point(pBytes):
     res = bytes(65)
     secp256k1.double_point(pBytes, res)
